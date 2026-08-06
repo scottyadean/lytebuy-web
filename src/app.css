@@ -1,0 +1,263 @@
+@import 'tailwindcss';
+
+/* Self-hosted variable fonts. No external request on first paint, which is the
+   whole point of a marketing site that has to feel instant. */
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/inter';
+
+/* Design tokens.
+
+   The palette is the one in _project-insights/marketing-site-plan.txt, and it
+   matches lytebuy-client/src/lib/theme.ts value for value so the marketing site
+   and the app read as one product.
+
+   Three values are NOT verbatim from the source palette, each for a stated
+   reason. Every text/background pairing used here clears WCAG AA. Most of this
+   palette is far too low-contrast to sit on a light background as text, so do
+   not introduce a new pairing without checking it. */
+@theme {
+	/* --- brand greys ------------------------------------------------------ */
+
+	/* iron-grey, verbatim. Headings, primary buttons. 10.59:1 on white. */
+	--color-iron: #36413e;
+	--color-iron-soft: #4a5754;
+
+	/* charcoal, verbatim. Body copy. 6.49:1 on white, 5.16:1 on canvas. */
+	--color-charcoal: #5d5e60;
+
+	/* rosy-granite, verbatim. Only 3.30:1 on white, so DECORATIVE AND DISABLED
+	   STATES ONLY -- never body text. */
+	--color-granite: #8d8d92;
+
+	/* thistle, verbatim. Stronger fills; pair with iron, never white (5.24:1). */
+	--color-thistle: #beb2c8;
+
+	/* dust-grey, verbatim. Borders and inert wells. */
+	--color-dust: #d7d6d6;
+
+	/* Page canvas. dust-grey lightened from 84% to 90% lightness: at the source
+	   value, muted text lands at 4.48:1 and just misses AA. Same hue, reads as
+	   the same tone. Use --color-dust where dust-grey exactly is wanted. */
+	--color-canvas: #e6e5e5;
+	--color-surface: #ffffff;
+
+	/* Thistle darkened to 40% lightness, hue preserved. Source thistle is 2.02:1
+	   on white -- unreadable -- and this is a TEXT colour (links, prices, eyebrow
+	   labels). Keeps the palette's purple while staying legible at 6.66:1. */
+	--color-accent: #685577;
+	/* Thistle tint for badge fills carrying accent text (5.45:1). */
+	--color-accent-soft: #ebe7ee;
+
+	/* --- typography ------------------------------------------------------- */
+
+	/* Fraunces carries the editorial, hand-made feel the brief asks for; its
+	   optical-size axis keeps big display text from looking spindly. Inter does
+	   the reading. */
+	--font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+	/* Display sizes are fluid so the hero never needs a breakpoint jump. */
+	--text-hero: clamp(2.75rem, 7vw, 5.5rem);
+	--text-display: clamp(2rem, 4.5vw, 3.5rem);
+	--text-title: clamp(1.5rem, 2.5vw, 2.25rem);
+
+	/* --- shape ------------------------------------------------------------ */
+	--radius-card: 0.25rem;
+	--shadow-lift: 0 1px 2px rgb(54 65 62 / 0.06), 0 12px 32px -12px rgb(54 65 62 / 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	/* Respect a user's reduced-motion preference everywhere at once, including
+	   the hero video's autoplay and every scroll reveal. */
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	body {
+		background-color: var(--color-surface);
+		color: var(--color-charcoal);
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: var(--font-display);
+		color: var(--color-iron);
+		font-weight: 600;
+		letter-spacing: -0.015em;
+		text-wrap: balance;
+	}
+
+	/* Visible focus for keyboard users on every interactive element. The offset
+	   keeps the ring legible on both the light canvas and dark photo overlays. */
+	:where(a, button, input, textarea, select, summary):focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Utilities
+   -------------------------------------------------------------------------- */
+
+@utility container-page {
+	width: 100%;
+	max-width: 76rem;
+	margin-inline: auto;
+	padding-inline: 1.5rem;
+
+	@media (width >= 64rem) {
+		padding-inline: 2.5rem;
+	}
+}
+
+/* The thin rule under an eyebrow label, lifted from the deck's three-dash motif. */
+@utility rule-dashes {
+	display: flex;
+	gap: 0.375rem;
+
+	&::before,
+	&::after {
+		content: '';
+		width: 0.75rem;
+		height: 2px;
+		background-color: var(--color-accent);
+	}
+}
+
+/* Long-form article body. Applied to sanitized markdown from the blog service,
+   which is why the selectors are element-based rather than class-based. */
+@utility prose-lytebuy {
+	color: var(--color-charcoal);
+	font-size: 1.0625rem;
+	line-height: 1.75;
+
+	& > * + * {
+		margin-top: 1.25em;
+	}
+
+	& h2 {
+		font-size: 1.75rem;
+		margin-top: 2.5em;
+		margin-bottom: -0.5em;
+	}
+
+	& h3 {
+		font-size: 1.3125rem;
+		margin-top: 2em;
+		margin-bottom: -0.5em;
+	}
+
+	& a {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	& strong {
+		color: var(--color-iron);
+		font-weight: 600;
+	}
+
+	& ul,
+	& ol {
+		padding-left: 1.5rem;
+	}
+
+	& ul {
+		list-style: disc;
+	}
+
+	& ol {
+		list-style: decimal;
+	}
+
+	& li + li {
+		margin-top: 0.5em;
+	}
+
+	& blockquote {
+		border-left: 3px solid var(--color-thistle);
+		padding-left: 1.25rem;
+		font-family: var(--font-display);
+		font-size: 1.25rem;
+		font-style: italic;
+		color: var(--color-iron);
+	}
+
+	& img {
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius-card);
+	}
+
+	& code {
+		background-color: var(--color-canvas);
+		padding: 0.15em 0.4em;
+		border-radius: 3px;
+		font-size: 0.9em;
+	}
+
+	& pre {
+		background-color: var(--color-iron);
+		color: var(--color-dust);
+		padding: 1.25rem;
+		border-radius: var(--radius-card);
+		overflow-x: auto;
+	}
+
+	& pre code {
+		background: none;
+		padding: 0;
+	}
+
+	& hr {
+		border-color: var(--color-dust);
+		margin-block: 2.5em;
+	}
+}
+
+/* Scroll-triggered reveal.
+
+   Gated on `.js`, which app.html sets on <html> before first paint. Without
+   that gate a visitor with JavaScript disabled would get opacity:0 sections
+   that nothing ever reveals -- an invisible site. No JS, no hiding. */
+@utility reveal {
+	@media (prefers-reduced-motion: no-preference) {
+		.js & {
+			opacity: 0;
+			transform: translateY(0.875rem);
+			transition:
+				opacity 0.45s ease-out,
+				transform 0.45s ease-out;
+		}
+
+		.js &.is-visible {
+			opacity: 1;
+			transform: none;
+		}
+	}
+}

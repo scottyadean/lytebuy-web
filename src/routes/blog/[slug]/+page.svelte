@@ -1,0 +1,113 @@
+<script lang="ts">
+	import { env } from '$env/dynamic/public';
+	import Button from '$lib/components/Button.svelte';
+	import Eyebrow from '$lib/components/Eyebrow.svelte';
+	import PostCard from '$lib/components/PostCard.svelte';
+	import Reveal from '$lib/components/Reveal.svelte';
+	import Section from '$lib/components/Section.svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import { site } from '$lib/config';
+	import { formatDate, isoDate, readingMinutes } from '$lib/format';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+
+	const origin = $derived((env.PUBLIC_SITE_URL || site.url).replace(/\/$/, ''));
+	const minutes = $derived(readingMinutes(data.post.body));
+</script>
+
+<Seo
+	title={data.post.title}
+	description={data.description}
+	image={data.post.cover_image_url ?? undefined}
+	type="article"
+	publishedAt={isoDate(data.post.created_date)}
+	modifiedAt={isoDate(data.post.updated_date)}
+	author={data.post.author}
+	schema={{
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		headline: data.post.title,
+		description: data.description,
+		datePublished: isoDate(data.post.created_date),
+		dateModified: isoDate(data.post.updated_date),
+		author: { '@type': 'Person', name: data.post.author },
+		publisher: { '@type': 'Organization', name: site.name },
+		mainEntityOfPage: `${origin}/blog/${data.post.slug}`,
+		...(data.post.cover_image_url ? { image: data.post.cover_image_url } : {})
+	}}
+/>
+
+<article>
+	<Section tone="surface" space="md">
+		<div class="mx-auto max-w-3xl">
+			<a href="/blog" class="text-sm text-accent hover:text-iron">
+				<span aria-hidden="true">&larr;</span> All posts
+			</a>
+
+			<h1 class="mt-6 text-display leading-[1.05]">{data.post.title}</h1>
+
+			<div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-granite">
+				<span>{data.post.author}</span>
+				<span aria-hidden="true">·</span>
+				<time datetime={isoDate(data.post.created_date)}>
+					{formatDate(data.post.created_date)}
+				</time>
+				<span aria-hidden="true">·</span>
+				<span>{minutes} min read</span>
+			</div>
+
+			{#if data.post.tags.length}
+				<ul class="mt-5 flex flex-wrap gap-2">
+					{#each data.post.tags as tag (tag)}
+						<li class="bg-accent-soft px-2.5 py-1 text-xs tracking-wide text-accent uppercase">
+							{tag}
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</div>
+	</Section>
+
+	{#if data.post.cover_image_url}
+		<div class="container-page">
+			<img
+				src={data.post.cover_image_url}
+				alt=""
+				class="aspect-[16/9] w-full object-cover"
+				fetchpriority="high"
+			/>
+		</div>
+	{/if}
+
+	<Section tone="surface" space="md">
+		<div class="mx-auto max-w-3xl">
+			<!-- Sanitized server-side in lib/server/markdown.ts. -->
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			<div class="prose-lytebuy">{@html data.html}</div>
+		</div>
+	</Section>
+</article>
+
+{#if data.related.length}
+	<Section tone="canvas" space="md">
+		<Reveal>
+			<Eyebrow>Keep reading</Eyebrow>
+			<h2 class="text-title">More from the blog</h2>
+		</Reveal>
+		<div class="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
+			{#each data.related as post, index (post.id)}
+				<Reveal delay={index * 80}>
+					<PostCard {post} />
+				</Reveal>
+			{/each}
+		</div>
+	</Section>
+{/if}
+
+<Section tone="iron" space="md">
+	<div class="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+		<h2 class="max-w-xl text-title">Want your shop on the map?</h2>
+		<Button href="/sell" variant="onDark" size="lg">Start selling</Button>
+	</div>
+</Section>

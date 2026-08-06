@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap is generated at runtime and includes every published post and release.
+Sitemap: https://lytebuy.com/sitemap.xml
