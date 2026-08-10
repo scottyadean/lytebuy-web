@@ -12,9 +12,23 @@
 	import StatBlock from '$lib/components/StatBlock.svelte';
 	import VendorCard from '$lib/components/VendorCard.svelte';
 	import { appLinks, site } from '$lib/config';
+	import { formatCount } from '$lib/format';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	// The three evergreen "the return" stats, plus a live vendor count when the
+	// backend is reachable. If the count is unavailable the block just shows the
+	// three static stats (StatBlock lays out any length), so the page never shows
+	// a wrong or zero figure.
+	const returnStats = $derived([
+		...(data.vendorCount != null
+			? [{ value: formatCount(data.vendorCount), label: 'Local businesses on lytebuy' }]
+			: []),
+		{ value: 'Free', label: 'To list your business and post promotions' },
+		{ value: '100%', label: 'Of your sale stays yours on a free listing' },
+		{ value: 'It only takes minutes', label: 'From signing up to your first live promotion' }
+	]);
 
 	const sellSteps = [
 		{
@@ -250,13 +264,7 @@
 			counter is attributed.
 		</p>
 		<div class="mt-12">
-			<StatBlock
-				stats={[
-					{ value: '$0', label: 'To list your business and post promotions' },
-					{ value: '100%', label: 'Of your sale stays yours on a free listing' },
-					{ value: 'Minutes', label: 'From signing up to your first live promotion' }
-				]}
-			/>
+			<StatBlock stats={returnStats} />
 		</div>
 	</Reveal>
 </Section>

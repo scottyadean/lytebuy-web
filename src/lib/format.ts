@@ -27,3 +27,9 @@ export function readingMinutes(markdown: string | null | undefined): number {
 	if (!markdown) return 1;
 	return Math.max(1, Math.ceil(markdown.trim().split(/\s+/).length / 200));
 }
+
+/** Thousands-grouped count, e.g. 1234 -> "1,234". Fixed locale so server and
+ *  client render the same string and hydration does not warn. */
+export function formatCount(value: number): string {
+	return new Intl.NumberFormat('en-US').format(value);
+}
