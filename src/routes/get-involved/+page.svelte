@@ -43,35 +43,20 @@
 
 			<dl class="mt-12 space-y-6 border-t border-dust pt-8">
 				<div>
-					<dt class="text-sm tracking-wide text-granite uppercase">Sell with us</dt>
+					<dt class="text-sm tracking-wide text-granite uppercase">Contact Us</dt>
 					<dd class="mt-1">
 						<a
-							href="mailto:{contact.vendorEmail}"
+							href="mailto:{contact.email}"
 							class="text-accent underline underline-offset-4"
 						>
-							{contact.vendorEmail}
-						</a>
-					</dd>
-				</div>
-				<div>
-					<dt class="text-sm tracking-wide text-granite uppercase">Press</dt>
-					<dd class="mt-1">
-						<a href="mailto:{contact.pressEmail}" class="text-accent underline underline-offset-4">
-							{contact.pressEmail}
-						</a>
-					</dd>
-				</div>
-				<div>
-					<dt class="text-sm tracking-wide text-granite uppercase">Anything else</dt>
-					<dd class="mt-1">
-						<a href="mailto:{contact.email}" class="text-accent underline underline-offset-4">
 							{contact.email}
 						</a>
 					</dd>
 				</div>
+
 				<div>
-					<dt class="text-sm tracking-wide text-granite uppercase">Where we are</dt>
-					<dd class="mt-1">{contact.town}</dd>
+					<dt class="text-sm tracking-wide text-granite uppercase">Where We Are</dt>
+					<dd class="mt-1">{contact.town} ({contact.timezone})</dd>
 				</div>
 			</dl>
 		</div>
@@ -79,7 +64,7 @@
 		<div id="contact" class="border border-dust bg-canvas p-7 md:p-10">
 			{#if form?.success}
 				<div class="py-10 text-center">
-					<h2 class="text-title">Thank you — that is with us.</h2>
+					<h2 class="text-title">Thank you!</h2>
 					<p class="mt-4 leading-relaxed">
 						We read everything ourselves, so it may take a day or two. If it is urgent, email
 						<a href="mailto:{contact.email}" class="text-accent underline underline-offset-4">

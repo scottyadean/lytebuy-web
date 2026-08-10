@@ -266,8 +266,8 @@
 		</div>
 		<p class="mt-8 text-sm text-granite">
 			Questions before you start? <a
-				href="mailto:{contact.vendorEmail}"
-				class="text-thistle underline underline-offset-4">{contact.vendorEmail}</a
+				href="mailto:{contact.e}"
+				class="text-thistle underline underline-offset-4">{contact.email}</a
 			>
 		</p>
 	</Reveal>

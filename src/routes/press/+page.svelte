@@ -21,8 +21,8 @@
 		<h1 class="max-w-3xl text-display leading-[1.05]">Announcements and press releases.</h1>
 		<p class="mt-6 max-w-xl text-lg leading-relaxed">
 			Everything we have said on the record. For interviews, figures or images, write to
-			<a href="mailto:{contact.pressEmail}" class="text-accent underline underline-offset-4">
-				{contact.pressEmail}
+			<a href="mailto:{contact.email}" class="text-accent underline underline-offset-4">
+				{contact.email}
 			</a>.
 		</p>
 	</Reveal>
@@ -61,8 +61,8 @@
 			<h2 class="text-title">No releases yet.</h2>
 			<p class="mt-4 leading-relaxed">
 				When we have something on the record it will appear here. For anything urgent, write to
-				<a href="mailto:{contact.pressEmail}" class="text-accent underline underline-offset-4">
-					{contact.pressEmail}
+				<a href="mailto:{contact.email}" class="text-accent underline underline-offset-4">
+					{contact.email}
 				</a>.
 			</p>
 		</div>

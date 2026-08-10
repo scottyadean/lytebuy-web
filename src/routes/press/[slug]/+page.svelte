@@ -64,10 +64,10 @@
 				<h2 class="text-lg">Media contact</h2>
 				<p class="mt-2 leading-relaxed">
 					<a
-						href="mailto:{contact.pressEmail}"
+						href="mailto:{contact.email}"
 						class="text-accent underline underline-offset-4"
 					>
-						{contact.pressEmail}
+						{contact.email}
 					</a>
 					<br />
 					{site.name}, {contact.town}

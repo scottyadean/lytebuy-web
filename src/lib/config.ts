@@ -35,8 +35,8 @@ export const appLinks = {
 } as const;
 
 export const contact = {
-	email: 'hello@lytebuy.com',
-	vendorEmail: 'sell@lytebuy.com',
+	email: 'info@lytebuy.com',
 	pressEmail: 'press@lytebuy.com',
-	town: 'Placerville, California'
+	town: 'Lotus, California',
+	timezone: "PST"
 } as const;
