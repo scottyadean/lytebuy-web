@@ -4,6 +4,7 @@
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import FeatureCard from '$lib/components/FeatureCard.svelte';
 	import Hero from '$lib/components/Hero.svelte';
+	import Lantern from '$lib/components/Lantern.svelte';
 	import PostCard from '$lib/components/PostCard.svelte';
 	import ProductCard from '$lib/components/ProductCard.svelte';
 	import Reveal from '$lib/components/Reveal.svelte';
@@ -104,7 +105,13 @@
 	<div class="grid gap-14 lg:grid-cols-2 lg:gap-20">
 		<Reveal>
 			<Eyebrow>Our mission</Eyebrow>
-			<h2 class="text-display leading-[1.05]">A small business network, not a marketplace giant.</h2>
+			<!-- The full lantern sits beside the heading, sized to the heading so its
+			     flicker animation carries the eye. It is the larger element now, so
+			     the heading steps down from text-display to text-title. -->
+			<div class="mt-4 flex items-center gap-6">
+				<Lantern variant="full" class="h-40 w-auto shrink-0" />
+				<h2 class="text-title leading-[1.05]">A small business network, not a marketplace giant.</h2>
+			</div>
 			<p class="mt-6 text-lg leading-relaxed">
 				{site.blurb}
 			</p>

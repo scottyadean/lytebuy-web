@@ -54,7 +54,7 @@
 		{/if}
 
 		<p class="mt-4 text-sm font-medium text-accent">
-			Read more <span aria-hidden="true">&rarr;</span>
+			<a {href}>Read more <span aria-hidden="true">&rarr;</span></a>
 		</p>
 	</div>
 </article>
