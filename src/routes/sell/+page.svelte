@@ -72,10 +72,10 @@
 			},
 			{
 				'@type': 'Question',
-				name: 'Does Lytebuy handle my taxes?',
+				name: 'Does Lytebuy handle sales tax?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'No. Lytebuy does not take tax directly. We can provide a 1099 form and a breakdown of your sales for your records, but filing and paying tax remains yours to do.'
+					text: 'Yes. As the marketplace, Lytebuy calculates, collects, and remits sales tax on your sales based on where the buyer is. It never comes out of your payout and you do not file sales-tax returns for your Lytebuy sales. Income tax on what you earn is still yours; we can provide a 1099 where one applies and a breakdown of your sales for your records.'
 				}
 			}
 		]
@@ -211,26 +211,25 @@
 	<div class="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
 		<Reveal>
 			<Eyebrow>Tax</Eyebrow>
-			<h2 class="text-display leading-[1.05]">We give you the paperwork, not the headache.</h2>
+			<h2 class="text-display leading-[1.05]">Sales tax is handled. That's on us.</h2>
 		</Reveal>
 
 		<Reveal delay={100}>
 			<div class="space-y-5 text-lg leading-relaxed">
 				<p>
-					<strong class="text-iron">Lytebuy does not take tax directly.</strong> We do not withhold
-					anything from your sales and we do not remit tax on your behalf.
+					<strong class="text-iron">Lytebuy collects and remits sales tax for you.</strong>
+					As the marketplace, we calculate the right sales tax on each order based on where the
+					buyer is, add it at checkout, and send it to the state. It never comes out of your
+					payout, and you never file a sales-tax return for your Lytebuy sales.
 				</p>
 				<p>
-					What we do give you is the record. We can issue a <strong class="text-iron">1099</strong>
-					where one applies, and a full breakdown of your sales and fees for the year, so you or
-					your accountant have the numbers in one place.
+					Your payout is your sale price minus our fees — the sales tax is separate and handled
+					by us. You can see the tax collected on your sales any time in your dashboard.
 				</p>
 				<p class="text-base text-charcoal">
-					How much tax you owe and when you file it depends on your business and where you are.
-					We are not tax advisers — talk to yours. If you need a figure or a document we have not
-					given you,
-					<a href="/get-involved" class="text-accent underline underline-offset-4">ask us</a>
-					and we will get it to you.
+					Income tax on your earnings is still yours — we can provide a
+					<strong class="text-iron">1099</strong> where one applies and a yearly sales breakdown.
+					We are not tax advisers; talk to yours.
 				</p>
 			</div>
 		</Reveal>
@@ -266,7 +265,7 @@
 		</div>
 		<p class="mt-8 text-sm text-granite">
 			Questions before you start? <a
-				href="mailto:{contact.e}"
+				href="mailto:{contact.email}"
 				class="text-thistle underline underline-offset-4">{contact.email}</a
 			>
 		</p>
