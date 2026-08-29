@@ -7,13 +7,31 @@
 	import Section from '$lib/components/Section.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { site } from '$lib/config';
-	import { formatDate, isoDate, readingMinutes } from '$lib/format';
+	import { formatCount, formatDate, isoDate, readingMinutes } from '$lib/format';
+	import { recordView } from '$lib/views';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const origin = $derived((env.PUBLIC_SITE_URL || site.url).replace(/\/$/, ''));
 	const minutes = $derived(readingMinutes(data.post.body));
+
+	// The loaded count is before this view; recording the view returns the
+	// incremented count so the reader sees their own visit. bumped holds that
+	// result when it arrives and falls back to the loaded value until then.
+	let bumped = $state<number | null>(null);
+	const views = $derived(bumped ?? data.post.views);
+
+	// Keyed on the post id so a client-side navigation to another post records a
+	// fresh view (onMount would fire only once for the reused component). Reset
+	// first so the new post never briefly shows the previous post's bumped count.
+	$effect(() => {
+		const id = data.post.id;
+		bumped = null;
+		recordView('post', id).then((updated) => {
+			if (updated !== null) bumped = updated;
+		});
+	});
 </script>
 
 <Seo
@@ -55,6 +73,8 @@
 				</time>
 				<span aria-hidden="true">·</span>
 				<span>{minutes} min read</span>
+				<span aria-hidden="true">·</span>
+				<span>{formatCount(views)} {views === 1 ? 'view' : 'views'}</span>
 			</div>
 
 			{#if data.post.tags.length}

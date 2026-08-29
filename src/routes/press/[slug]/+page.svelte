@@ -3,12 +3,26 @@
 	import Section from '$lib/components/Section.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { contact, site } from '$lib/config';
-	import { formatDate, isoDate } from '$lib/format';
+	import { formatCount, formatDate, isoDate } from '$lib/format';
+	import { recordView } from '$lib/views';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const origin = $derived((env.PUBLIC_SITE_URL || site.url).replace(/\/$/, ''));
+
+	// See the blog post page for the reasoning: derive the shown count from the
+	// bumped result (once it lands) or the loaded count, and re-record per id.
+	let bumped = $state<number | null>(null);
+	const views = $derived(bumped ?? data.release.views);
+
+	$effect(() => {
+		const id = data.release.id;
+		bumped = null;
+		recordView('press_release', id).then((updated) => {
+			if (updated !== null) bumped = updated;
+		});
+	});
 </script>
 
 <Seo
@@ -50,6 +64,8 @@
 				</time>
 				<span aria-hidden="true">·</span>
 				{data.release.author}
+				<span aria-hidden="true">·</span>
+				{formatCount(views)} {views === 1 ? 'view' : 'views'}
 			</p>
 		</div>
 	</Section>

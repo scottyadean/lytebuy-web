@@ -103,7 +103,13 @@ export async function getContentBySlug(
 	return getContent(fetcher, type, match.id);
 }
 
-/** Single item. API-key guarded, and increments the view counter server-side. */
+/** Single item.
+ *
+ *  A read no longer increments the view counter: the blog service moved counting
+ *  to a separate endpoint (see bumpViews) that the browser calls after the page
+ *  renders. Reads are public now, but the key is still sent when present - it is
+ *  harmless and keeps working if a stage ever re-guards the route.
+ */
 export async function getContent(
 	fetcher: typeof fetch,
 	type: ContentType,
@@ -122,6 +128,35 @@ export async function getContent(
 		return (await response.json()) as Post;
 	} catch (cause) {
 		console.error(`blog: get ${type} failed`, cause);
+		return null;
+	}
+}
+
+/** Bump a post's view counter, returning the new count (or null on failure).
+ *
+ *  Public, no key. The browser cannot call the blog service directly because its
+ *  base URL is a server-only secret, so a page fires this through the site's own
+ *  /api/views route (see routes/api/views/+server.ts) and the request lands here
+ *  during SSR of that endpoint. Failures degrade to null: a missed view count is
+ *  never worth failing a request over.
+ */
+export async function bumpViews(
+	fetcher: typeof fetch,
+	type: ContentType,
+	id: string
+): Promise<number | null> {
+	const url = `${baseUrl()}/${PATHS[type]}/${encodeURIComponent(id)}/views`;
+
+	try {
+		const response = await fetcher(url, { method: 'POST' });
+		if (!response.ok) {
+			console.error(`blog: bump ${type} views responded ${response.status}`);
+			return null;
+		}
+		const data = (await response.json()) as { views: number };
+		return data.views;
+	} catch (cause) {
+		console.error(`blog: bump ${type} views failed`, cause);
 		return null;
 	}
 }
