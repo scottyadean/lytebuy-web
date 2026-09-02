@@ -7,6 +7,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import StatBlock from '$lib/components/StatBlock.svelte';
 	import { contact } from '$lib/config';
+	import Lantern from '$lib/components/Lantern.svelte';
 
 	const values = [
 		{
@@ -64,16 +65,24 @@
 	<div class="mx-auto max-w-3xl">
 		<Reveal>
 			<Eyebrow>Our vision</Eyebrow>
+			
 			<h2 class="text-display leading-[1.05]">Reconnecting people to communities.</h2>
+			<div class="mx-auto max-w-80"> <Lantern variant="full" class="auto" /> </div>
 			<div class="mt-8 space-y-5 text-lg leading-relaxed">
+
 				<p>
 					In the heart of every town, unique local vendors breathe life into the community. Somewhere
 					along the way it became easier to buy from a warehouse a thousand miles away than from the
 					person two streets over.
 				</p>
+
 				<p>
-					Lytebuy is a no-cost digital marketplace where small businesses showcase their speciality
-					to the thousands of people passing by. Let people know what you are famous for, and we
+					When you buy on Litbuy more money goes to the vendor. We charge substantially less then other platforms. 
+				</p>
+
+				<p>
+					As a is a low-cost digital marketplace where small businesses showcase their speciality
+					to the millons of people passing. Let people know what your main street is famous for, and we
 					will put you on the map.
 				</p>
 				<p class="font-display text-xl text-iron italic">

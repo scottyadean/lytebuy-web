@@ -40,6 +40,15 @@
 				If you make something, sell something, cook something or teach something in your town, there
 				is a place for you here. Listing is free.
 			</p>
+			
+
+			<hr class="mt-5" />
+
+			<p class="mt-6 text-lg leading-relaxed">
+				If you are are interested in promoting local shopping in your home town please reach out we would love to onboard your vendors. 
+			</p>
+			
+
 
 			<dl class="mt-12 space-y-6 border-t border-dust pt-8">
 				<div>

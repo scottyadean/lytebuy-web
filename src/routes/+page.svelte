@@ -89,7 +89,7 @@
 	poster="/img/placerville-hero-poster.jpg"
 >
 	{#snippet actions()}
-		<Button href={appLinks.web} variant="onDark" size="lg">Open the app</Button>
+		<Button href={appLinks.web} variant="onDark" size="lg">Open on web</Button>
 		<Button
 			href="/sell"
 			size="lg"
@@ -97,6 +97,10 @@
 		>
 			Start selling
 		</Button>
+		<!-- basis-full keeps the store badges on their own row: the actions
+		     wrapper is a flex line, so without it they reflow up beside the
+		     buttons at wider viewports. -->
+		<AppBadges onDark class="basis-full" />
 	{/snippet}
 </Hero>
 
@@ -139,6 +143,54 @@
 		</Reveal>
 	</div>
 </Section>
+
+<!-- Featured vendor (LB-Web-3). Rendered only when the API returns one, so the
+     page simply omits the section when no vendor is featured or the backend is
+     unreachable - it never shows an empty shell. -->
+{#if data.featuredVendor}
+	<Section tone="accent">
+		<Reveal>
+			<Eyebrow>Featured vendor</Eyebrow>
+			<div class="mt-4 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+				<div>
+					<h2 class="text-title leading-[1.05]">{data.featuredVendor.name}</h2>
+					{#if data.featuredVendor.blurb}
+						<p class="mt-5 text-lg leading-relaxed">{data.featuredVendor.blurb}</p>
+					{/if}
+					<p class="mt-5 leading-relaxed">
+						A different small business every time you visit - this is who is on lytebuy right
+						now.
+					</p>
+					<div class="mt-8 flex flex-wrap items-center gap-4">
+						<Button href={data.featuredVendor.storeUrl}>Visit the store &rarr;</Button>
+						<Button href="/sell" variant="ghost">Sell on lytebuy</Button>
+					</div>
+				</div>
+
+				{#if data.featuredVendor.bannerUrl}
+					<img
+						src={data.featuredVendor.bannerUrl}
+						alt=""
+						loading="lazy"
+						decoding="async"
+						class="h-full max-h-[24rem] w-full object-cover"
+					/>
+				{:else if data.featuredVendor.logoUrl}
+					<!-- No banner: show the logo contained on a tint so it is not stretched. -->
+					<div class="flex items-center justify-center bg-surface p-12">
+						<img
+							src={data.featuredVendor.logoUrl}
+							alt=""
+							loading="lazy"
+							decoding="async"
+							class="max-h-48 w-auto object-contain"
+						/>
+					</div>
+				{/if}
+			</div>
+		</Reveal>
+	</Section>
+{/if}
 
 <!-- What lytebuy does -->
 <Section tone="canvas">
