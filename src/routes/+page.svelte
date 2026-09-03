@@ -3,6 +3,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import FeatureCard from '$lib/components/FeatureCard.svelte';
+	import FeeComparison from '$lib/components/FeeComparison.svelte';
 	import Hero from '$lib/components/Hero.svelte';
 	import Lantern from '$lib/components/Lantern.svelte';
 	import PostCard from '$lib/components/PostCard.svelte';
@@ -14,9 +15,18 @@
 	import VendorCard from '$lib/components/VendorCard.svelte';
 	import { appLinks, site } from '$lib/config';
 	import { formatCount } from '$lib/format';
+	import research from '../../../docs/reports/market-research.json';
+	import type { Platform, Scenario } from '$lib/fees';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	// LB-Web-8. Same build-time import of the LB-Web-5 research file as
+	// /who-we-are - a static repo document, so nothing is fetched at runtime and
+	// the two pages cannot drift apart.
+	const lytebuy = research.lytebuy as unknown as Platform;
+	const platforms = research.platforms as unknown as Platform[];
+	const scenarios = research.comparison_scenarios as unknown as Scenario[];
 
 	// The three evergreen "the return" stats, plus a live vendor count when the
 	// backend is reachable. If the count is unavailable the block just shows the
@@ -84,7 +94,7 @@
 	size="full"
 	title="Main street"
 	accent="in your pocket."
-	lede="Lytebuy puts the shops, makers and kitchens of your town on the map — and hands the little guy the same reach the giants pay millions for."
+	lede="Lytebuy puts the shops, makers and kitchens of your town on the map and hands the little guy the same reach the giants pay millions for."
 	video="/video/placerville-hero.mp4"
 	poster="/img/placerville-hero-poster.jpg"
 >
@@ -103,6 +113,59 @@
 		<AppBadges onDark class="basis-full" />
 	{/snippet}
 </Hero>
+
+<!-- LB-Web-8: the fee comparison, above the mission. Same component and same
+     data file as /who-we-are, so the two pages cannot show different numbers.
+     Tone is canvas against the surface Mission band below it. -->
+<Section id="what-it-costs" tone="canvas">
+	<Reveal>
+		<Eyebrow>Why Vendors Prefer Lytebuy</Eyebrow>
+		<!-- The ticket wrote "It's a no brainer"; spelled out to match the rest of
+		     the site, which writes contractions in full ("It is genuinely easy to
+		     sell on lytebuy" further down this same page). -->
+		<h2 class="max-w-2xl text-display leading-[1.05]">
+			It is a no-brainer to sell on lytebuy.
+		</h2>
+		<!-- Deliberately not the same lede as /who-we-are: that page frames this as
+		     evidence for a claim it just made, whereas here it is the pitch itself.
+		     Identical copy on two pages reads as boilerplate and competes in search. -->
+		<p class="mt-6 max-w-2xl text-lg leading-relaxed">
+			More of every sale stays with the person who made it. Pick an order size and see what the
+			big marketplaces take out of the same sale, using each platform's own published fee
+			schedule.
+		</p>
+	</Reveal>
+
+	<Reveal delay={80}>
+		<!-- LB-Web-9: the lamp post fills the empty right-hand column beside the
+		     chart. The chart keeps its max-w-3xl measure (it was never meant to
+		     stretch); the lamp takes the space that was blank. It only appears from
+		     lg up - below that the chart uses the full width and there is no gap to
+		     fill, so the illustration would just push the bars around. -->
+		<div class="mt-12 grid items-end gap-10 lg:grid-cols-[minmax(0,48rem)_auto]">
+			<div class="max-w-3xl">
+				<FeeComparison {lytebuy} {platforms} {scenarios} />
+			</div>
+			<!-- Decorative, so alt is empty: the chart beside it carries the meaning.
+			     width/height are the file's own 76.2x254 units, kept so the browser
+			     reserves the right aspect ratio and the row does not shift on load.
+
+			     NOT loading="lazy": this sits inside a <Reveal>, which starts the
+			     wrapper at opacity 0 and animates it in on scroll. A lazy image in a
+			     transparent, off-screen wrapper never enters the loading viewport, so
+			     it stayed permanently undecoded (naturalWidth 0) and the column
+			     rendered blank. The file is only 31KB, so eager is the right call. -->
+			<img
+				src="/img/lamp-post.svg"
+				alt=""
+				width="76"
+				height="254"
+				decoding="async"
+				class="hidden h-auto w-full max-w-[13rem] justify-self-center lg:block"
+			/>
+		</div>
+	</Reveal>
+</Section>
 
 <!-- Mission -->
 <Section id="mission" tone="surface">

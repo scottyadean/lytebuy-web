@@ -15,6 +15,10 @@ export const site = {
 } as const;
 
 export const nav = [
+	// The entry point for anyone who wants to help their own main street - it
+	// forks to the vendor and lyte bearer paths (LB-WEB-11). First in the list
+	// because it is the one action the site is actually asking for.
+	{ href: '/promote-your-town', label: 'Promote your town' },
 	{ href: '/who-we-are', label: 'Who we are' },
 	{ href: '/blog', label: 'Blog' },
 	{ href: '/press', label: 'Press' },

@@ -7,6 +7,11 @@ import type { RequestHandler } from './$types';
 const STATIC_ROUTES: Array<{ path: string; priority: string; changefreq: string }> = [
 	{ path: '/', priority: '1.0', changefreq: 'weekly' },
 	{ path: '/who-we-are', priority: '0.8', changefreq: 'monthly' },
+	{ path: '/our-vision', priority: '0.6', changefreq: 'monthly' },
+	// The lyte bearer (affiliate) pitch - a conversion page, so ranked with /sell.
+	{ path: '/lyte-bearer', priority: '0.8', changefreq: 'monthly' },
+	// The fork between the two paths; a primary nav entry, so ranked with them.
+	{ path: '/promote-your-town', priority: '0.9', changefreq: 'monthly' },
 	// The vendor conversion page; every "Start selling" CTA lands here.
 	{ path: '/sell', priority: '0.9', changefreq: 'monthly' },
 	{ path: '/get-the-app', priority: '0.8', changefreq: 'monthly' },

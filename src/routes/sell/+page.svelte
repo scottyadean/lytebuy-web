@@ -30,7 +30,7 @@
 	const payoutSteps = [
 		{
 			title: 'Connect your payout account',
-			body: 'A one-time setup through Stripe, our payments provider. You enter your bank details with them directly — Lytebuy never sees or stores them.'
+			body: 'A one-time setup through Stripe, our payments provider. You enter your bank details with them directly. Lytebuy never sees or stores them.'
 		},
 		{
 			title: 'Sales build your balance',
@@ -49,7 +49,7 @@
 
 <Seo
 	title="Start selling on Lytebuy"
-	description="Listing on Lytebuy is free and you keep 100% of your sale price. Here is how to sign up, how you get paid, and how tax works."
+	description="Listing on Lytebuy is free. You keep 100% of your online sale price, and taking a card in person costs just 1.2%. Here is how to sign up, how you get paid, and how tax works."
 	schema={{
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
@@ -59,7 +59,7 @@
 				name: 'What does it cost to sell on Lytebuy?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'Nothing. Listing your business and posting promotions is free. A small platform fee is added to the buyer at checkout, so you keep 100% of your sale price.'
+					text: 'Listing your business and posting promotions is free, with no monthly or setup fee. On an online sale a small platform fee is added to the buyer at checkout, so you keep 100% of your sale price. Taking a card in person with Tap to Pay costs 1.2% of the sale.'
 				}
 			},
 			{
@@ -85,7 +85,7 @@
 <Hero
 	title="Start selling"
 	accent="on lytebuy."
-	lede="Free to list. Free to post. You keep 100% of your sale price."
+	lede="Free to list. Free to post. You keep 100% of your online sale price - and just 1.2% in person."
 	poster="/img/come-in-were-awesome.jpg"
 	posterAlt="A hanging shop sign reading Come in, we're awesome"
 >
@@ -153,16 +153,26 @@
 	<Reveal>
 		<Eyebrow>What it costs</Eyebrow>
 		<h2 class="max-w-3xl text-display leading-[1.05]">
-			Nothing to you. You keep 100% of your sale price.
+			Free to list. Nothing extra taken online, 1.2% in person.
 		</h2>
 		<div class="mt-8 max-w-2xl space-y-5 text-lg leading-relaxed">
 			<p>
-				Listing your business is free. Posting promotions is free. There is no monthly fee, no
-				setup fee, and no commission taken out of what you charge.
+				Listing your business is free. Posting promotions is free. There is no monthly fee and no
+				setup fee.
 			</p>
 			<p>
-				A small platform fee is added to the buyer at checkout. It funds the platform, and it means
-				the price you set is the amount that reaches your balance.
+				On an online sale, a small platform fee is added to the buyer at checkout. It funds the
+				platform, and it means the price you set is the amount that reaches your balance.
+			</p>
+			<!-- POS is a genuinely different deal and the page used to claim 100%
+			     unconditionally, which is not true in person: POS_COMMISSION_BPS is
+			     120, i.e. 1.2% off the subtotal (services/orders.py:439). Saying it
+			     plainly is both honest and a good number to be judged on. -->
+			<p>
+				Taking a card in person with Tap to Pay is <strong>1.2%</strong> of the sale, plus the
+				card processing itself - there is no buyer-side fee in person, so this is what funds it.
+				You are doing the work of serving someone at the counter, so we take less than we would
+				online. No card reader to buy, no monthly fee, and your phone is the terminal.
 			</p>
 		</div>
 
@@ -170,8 +180,8 @@
 			<StatBlock
 				stats={[
 					{ value: '$0', label: 'To list your business and post promotions' },
-					{ value: '100%', label: 'Of your sale price stays yours' },
-					{ value: 'Buyer', label: 'Pays the small platform fee at checkout' }
+					{ value: '100%', label: 'Of your sale price stays yours on an online sale' },
+					{ value: '1.2%', label: 'Our cut on an in-person sale, plus card processing' }
 				]}
 			/>
 		</div>
@@ -223,11 +233,11 @@
 					payout, and you never file a sales-tax return for your Lytebuy sales.
 				</p>
 				<p>
-					Your payout is your sale price minus our fees — the sales tax is separate and handled
+					Your payout is your sale price minus bank transfer fees the sales tax is separate and handled
 					by us. You can see the tax collected on your sales any time in your dashboard.
 				</p>
 				<p class="text-base text-charcoal">
-					Income tax on your earnings is still yours — we can provide a
+					Income tax on your earnings is still yours, we can provide a
 					<strong class="text-iron">1099</strong> where one applies and a yearly sales breakdown.
 					We are not tax advisers; talk to yours.
 				</p>

@@ -22,7 +22,7 @@
 		},
 		{
 			title: 'Revenue without gouging',
-			body: 'Optional paid placement, subscriptions and transaction fees on assisted sales — never a toll on a vendor simply existing on the platform.'
+			body: 'Optional paid placement, subscriptions and transaction fees on assisted sales never a toll on a vendor simply existing on the platform.'
 		}
 	];
 </script>
@@ -54,7 +54,11 @@
 				<p>
 					Most software built for this segment either extracts heavily or was designed for national
 					brands and handed down. We are building for the corner shop first, and we are doing it
-					in a town where we can walk into every business on the list.
+					in a town where we can walk into every business on the list, then on to the next.  
+				</p>
+
+				<p>
+					One main street at a time accross the entire United States. 
 				</p>
 			</div>
 		</Reveal>

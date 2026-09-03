@@ -7,7 +7,15 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import StatBlock from '$lib/components/StatBlock.svelte';
 	import { contact } from '$lib/config';
-	import Lantern from '$lib/components/Lantern.svelte';
+	import FeeComparison from '$lib/components/FeeComparison.svelte';
+	import research from '../../../../docs/reports/market-research.json';
+	import type { Platform, Scenario } from '$lib/fees';
+
+	// LB-Web-6. Build-time import of the LB-Web-5 research file - it is a static
+	// document in the repo, not an API, so there is nothing to fetch at runtime.
+	const lytebuy = research.lytebuy as unknown as Platform;
+	const platforms = research.platforms as unknown as Platform[];
+	const scenarios = research.comparison_scenarios as unknown as Scenario[];
 
 	const values = [
 		{
@@ -35,7 +43,7 @@
 		},
 		{
 			title: 'They post what is good today',
-			body: 'A deal, a fresh batch, an event. Followers get it in their lytebuy inbox — never an unsolicited push.'
+			body: 'A deal, a fresh batch, an event. Followers get it in their lytebuy inbox never an unsolicited push.'
 		},
 		{
 			title: 'Neighbours find them on the map',
@@ -61,37 +69,27 @@
 	posterAlt="A hanging shop sign reading Come in, we're awesome"
 />
 
-<Section tone="surface">
-	<div class="mx-auto max-w-3xl">
-		<Reveal>
-			<Eyebrow>Our vision</Eyebrow>
-			
-			<h2 class="text-display leading-[1.05]">Reconnecting people to communities.</h2>
-			<div class="mx-auto max-w-80"> <Lantern variant="full" class="auto" /> </div>
-			<div class="mt-8 space-y-5 text-lg leading-relaxed">
+<!-- LB-Web-7: the fee comparison now opens the page. "Our vision", which used to
+     sit above it, moved to its own footer-linked page at /our-vision. Tone is
+     surface as the first band under the hero; the sections below alternate from
+     there. -->
+<Section tone="surface" id="what-it-costs">
+	<Reveal>
+		<Eyebrow>What it costs</Eyebrow>
+		<h2 class="max-w-2xl text-display leading-[1.05]">
+			Less of the sale, out of the same order.
+		</h2>
+		<p class="mt-6 max-w-2xl text-lg leading-relaxed">
+			Every marketplace takes a cut. Here is what the big ones take out of one sale, next to
+			ours - using each platform's own published fee schedule.
+		</p>
+	</Reveal>
 
-				<p>
-					In the heart of every town, unique local vendors breathe life into the community. Somewhere
-					along the way it became easier to buy from a warehouse a thousand miles away than from the
-					person two streets over.
-				</p>
-
-				<p>
-					When you buy on Litbuy more money goes to the vendor. We charge substantially less then other platforms. 
-				</p>
-
-				<p>
-					As a is a low-cost digital marketplace where small businesses showcase their speciality
-					to the millons of people passing. Let people know what your main street is famous for, and we
-					will put you on the map.
-				</p>
-				<p class="font-display text-xl text-iron italic">
-					We want vibrant local economies where small businesses prosper and people enjoy better
-					things. Dream big, share love, enjoy life, support one another. That is the whole idea.
-				</p>
-			</div>
-		</Reveal>
-	</div>
+	<Reveal delay={80}>
+		<div class="mt-12 max-w-3xl">
+			<FeeComparison {lytebuy} {platforms} {scenarios} />
+		</div>
+	</Reveal>
 </Section>
 
 <Section tone="canvas">

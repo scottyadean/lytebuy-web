@@ -8,6 +8,7 @@
 			title: 'Lytebuy',
 			links: [
 				{ href: '/who-we-are', label: 'Who we are' },
+				{ href: '/our-vision', label: 'Our vision' },
 				{ href: '/blog', label: 'Blog' },
 				{ href: '/press', label: 'Press' },
 				{ href: '/investors', label: 'Investors' }
@@ -25,6 +26,7 @@
 			title: 'For shoppers',
 			links: [
 				{ href: '/get-the-app', label: 'Get the app' },
+				{ href: '/lyte-bearer', label: 'Lyte-Bearer Affiliate' },
 				{ href: '/#vendors', label: 'Browse vendors' },
 				{ href: '/#mission', label: 'Our mission' }
 			]

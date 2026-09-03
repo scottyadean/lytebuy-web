@@ -37,7 +37,7 @@
 	const absoluteImage = $derived(image.startsWith('http') ? image : `${origin}${image}`);
 	// The home page title is the brand alone; everything else is suffixed.
 	const fullTitle = $derived(
-		page.url.pathname === '/' ? `${site.name} — ${site.tagline}` : `${title} — ${site.name}`
+		page.url.pathname === '/' ? `${site.name} - ${site.tagline}` : `${title} - ${site.name}`
 	);
 
 	const jsonLd = $derived(

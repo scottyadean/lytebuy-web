@@ -3,11 +3,15 @@
 	import Reveal from '$lib/components/Reveal.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import Hero from '$lib/components/Hero.svelte';
 	import { contact } from '$lib/config';
 	import { formatDate, isoDate } from '$lib/format';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	
+
 </script>
 
 <Seo
@@ -15,7 +19,15 @@
 	description="Announcements and press releases from Lytebuy, plus how to reach us for comment."
 />
 
-<Section tone="surface" space="md">
+<Hero
+	title="Main Street"
+	accent="Press"
+	lede="Announcements and press releases."
+	poster="/img/press-building.jpg"
+	posterAlt="Historic buildings on a colorful street in Wallace, Idaho's scenic downtown, photo by Alannah Cavanaugh"
+/>
+
+<!-- <Section tone="surface" space="md">
 	<Reveal>
 		<Eyebrow>Press</Eyebrow>
 		<h1 class="max-w-3xl text-display leading-[1.05]">Announcements and press releases.</h1>
@@ -26,9 +38,10 @@
 			</a>.
 		</p>
 	</Reveal>
-</Section>
+</Section> -->
 
 <Section tone="canvas" space="md">
+<Eyebrow>Articles</Eyebrow>
 	{#if data.releases.length}
 		<ul class="divide-y divide-dust border-y border-dust">
 			{#each data.releases as release (release.id)}
