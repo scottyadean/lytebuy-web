@@ -4,7 +4,13 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+		<!-- SVG first for browsers that take it (crisp at any size); the .ico is the
+		     fallback for those that do not, and carries 16/32/48 variants. -->
+		<link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.ico" sizes="32x32" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />
+		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+		<meta name="theme-color" content="#36413e" />
 		<!-- Marks that JS is running, before first paint, so the scroll-reveal
 		     utility only hides content it is able to reveal again. -->
 		<script>

@@ -91,12 +91,16 @@
 
 	{#if data.post.cover_image_url}
 		<div class="container-page">
-			<img
-				src={data.post.cover_image_url}
-				alt=""
-				class="aspect-[16/9] w-full object-cover"
-				fetchpriority="high"
-			/>
+			<!-- Same max-w-3xl as the body copy below, so the cover lines up with
+			     the text instead of running the full 76rem container width. -->
+			<div class="mx-auto max-w-3xl">
+				<img
+					src={data.post.cover_image_url}
+					alt=""
+					class="aspect-[16/9] w-full object-cover"
+					fetchpriority="high"
+				/>
+			</div>
 		</div>
 	{/if}
 

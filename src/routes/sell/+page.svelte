@@ -112,15 +112,18 @@
 		<h2 class="max-w-2xl text-display leading-[1.05]">Three steps, one afternoon.</h2>
 	</Reveal>
 
+	<!-- Reveal goes inside the <li>, not around it: an <ol> whose children are
+	     <div>s is invalid markup, and assistive tech then stops announcing this
+	     as a list of three steps - which is the point of the section. -->
 	<ol class="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
 		{#each steps as item, index (item.step)}
-			<Reveal delay={index * 80}>
-				<li class="border-t-2 border-thistle pt-5">
+			<li class="border-t-2 border-thistle pt-5">
+				<Reveal delay={index * 80}>
 					<span class="font-display text-2xl text-thistle" aria-hidden="true">{item.step}</span>
 					<h3 class="mt-2 text-lg">{item.title}</h3>
 					<p class="mt-2 text-[0.9375rem] leading-relaxed">{item.body}</p>
-				</li>
-			</Reveal>
+				</Reveal>
+			</li>
 		{/each}
 	</ol>
 
@@ -201,8 +204,8 @@
 
 	<ol class="mt-14 grid gap-10 md:grid-cols-2 md:gap-x-16">
 		{#each payoutSteps as item, index (item.title)}
-			<Reveal delay={(index % 2) * 80}>
-				<li class="flex gap-5">
+			<li>
+				<Reveal delay={(index % 2) * 80} class="flex gap-5">
 					<span class="font-display text-2xl text-thistle" aria-hidden="true">
 						{String(index + 1).padStart(2, '0')}
 					</span>
@@ -210,8 +213,8 @@
 						<h3 class="text-lg">{item.title}</h3>
 						<p class="mt-1.5 text-[0.9375rem] leading-relaxed">{item.body}</p>
 					</div>
-				</li>
-			</Reveal>
+				</Reveal>
+			</li>
 		{/each}
 	</ol>
 </Section>

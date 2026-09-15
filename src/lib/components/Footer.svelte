@@ -8,6 +8,7 @@
 			title: 'Lytebuy',
 			links: [
 				{ href: '/who-we-are', label: 'Who we are' },
+				{ href: '/team', label: 'Team' },
 				{ href: '/our-vision', label: 'Our vision' },
 				{ href: '/blog', label: 'Blog' },
 				{ href: '/press', label: 'Press' },
@@ -18,6 +19,7 @@
 			title: 'For vendors',
 			links: [
 				{ href: '/sell', label: 'Start selling' },
+				{ href: '/help/start-a-business', label: 'How to start a business' },
 				{ href: '/sell#how-you-get-paid', label: 'How you get paid' },
 				{ href: '/get-involved#contact', label: 'Talk to us' }
 			]
@@ -79,6 +81,12 @@
 				</a>
 				<a href="/privacy" class="transition-colors hover:text-thistle">Privacy</a>
 				<a href="/terms" class="transition-colors hover:text-thistle">Terms</a>
+				<!-- Google Play's data-deletion policy wants this reachable without
+				     signing in and without the app installed. The footer is the one
+				     place on every page, which is where a reviewer will look. -->
+				<a href="/delete-account" class="transition-colors hover:text-thistle">
+					Delete account
+				</a>
 			</div>
 		</div>
 	</div>

@@ -1,3 +1,9 @@
+<style>
+	.stree-lamp{
+		background: url(img/lantern-post.jpg) -10px -50px no-repeat; 
+		background-size: 350px auto;
+	}
+</style>
 <script lang="ts">
 	// LB-WEB-11. "Promote your town" - the fork in the road.
 	//
@@ -95,11 +101,22 @@
 <Section id="pick-your-path" tone="surface">
 	<Reveal>
 		<Eyebrow>Pick your path</Eyebrow>
+		
+		<div class=" grid gap-5 md:grid-cols-2 md:gap-40">
+		<div class="mt-1">
 		<h2 class="max-w-2xl text-display leading-[1.05]">Do you sell things, or know people who do?</h2>
 		<p class="mt-6 max-w-2xl text-lg leading-relaxed">
 			That is the only question. Either way you are doing the same job - getting people through a
 			local door instead of onto a warehouse website.
 		</p>
+		</div>
+
+		<div>
+			<div class="stree-lamp h-70 shadow-lg overflow-hidden rounded-lg w-80" title="Lyte the way" >
+			</div>
+		</div>
+
+		</div>
 	</Reveal>
 
 	<div class="mt-14 grid gap-12 md:grid-cols-2 md:gap-10">
@@ -151,5 +168,22 @@
 				<Button href="/lyte-bearer" variant="secondary" size="lg">Become a lyte bearer</Button>
 			</div>
 		</Reveal>
+	</div>
+</Section>
+
+<!-- The third path, and the lightest one. Both options above ask for an ongoing
+     commitment; plenty of people want neither but can still name the shop that
+     should be here. Asking for that is a lead we would otherwise never get. -->
+<Section tone="iron" space="md">
+	<div class="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+		<div>
+			<Eyebrow onDark>Neither of those?</Eyebrow>
+			<h2 class="max-w-xl text-title leading-[1.1]">Just tell us who we are missing.</h2>
+			<p class="mt-4 max-w-lg leading-relaxed text-dust">
+				The baker who never posts online, the mechanic everyone recommends. Give us a name and
+				we will reach out - you do not have to.
+			</p>
+		</div>
+		<Button href="/suggest-a-shop" variant="onDark" size="lg">Suggest a shop</Button>
 	</div>
 </Section>

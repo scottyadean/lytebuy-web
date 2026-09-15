@@ -7,6 +7,9 @@ import type { RequestHandler } from './$types';
 const STATIC_ROUTES: Array<{ path: string; priority: string; changefreq: string }> = [
 	{ path: '/', priority: '1.0', changefreq: 'weekly' },
 	{ path: '/who-we-are', priority: '0.8', changefreq: 'monthly' },
+	// Linked from the footer alongside /who-we-are, but a supporting page rather
+	// than a conversion one, so it sits with /our-vision.
+	{ path: '/team', priority: '0.6', changefreq: 'monthly' },
 	{ path: '/our-vision', priority: '0.6', changefreq: 'monthly' },
 	// The lyte bearer (affiliate) pitch - a conversion page, so ranked with /sell.
 	{ path: '/lyte-bearer', priority: '0.8', changefreq: 'monthly' },
@@ -14,8 +17,14 @@ const STATIC_ROUTES: Array<{ path: string; priority: string; changefreq: string 
 	{ path: '/promote-your-town', priority: '0.9', changefreq: 'monthly' },
 	// The vendor conversion page; every "Start selling" CTA lands here.
 	{ path: '/sell', priority: '0.9', changefreq: 'monthly' },
+	// The vendor how-to. Ranked just under /sell: it is where anyone searching
+	// "how to start a business" lands, and it feeds /sell rather than competing.
+	{ path: '/help/start-a-business', priority: '0.8', changefreq: 'monthly' },
 	{ path: '/get-the-app', priority: '0.8', changefreq: 'monthly' },
 	{ path: '/get-involved', priority: '0.7', changefreq: 'monthly' },
+	// A low-friction lead source off /promote-your-town, so it ranks with the
+	// other contact-shaped pages rather than the conversion ones.
+	{ path: '/suggest-a-shop', priority: '0.7', changefreq: 'monthly' },
 	{ path: '/blog', priority: '0.7', changefreq: 'weekly' },
 	{ path: '/press', priority: '0.5', changefreq: 'monthly' },
 	{ path: '/investors', priority: '0.5', changefreq: 'monthly' }

@@ -140,15 +140,18 @@
 		<h2 class="max-w-2xl text-display leading-[1.05]">Four steps, one afternoon.</h2>
 	</Reveal>
 
+	<!-- Reveal goes inside the <li>, not around it: an <ol> whose children are
+	     <div>s is invalid markup, and assistive tech then stops announcing this
+	     as a list of four steps - which is the point of the section. -->
 	<ol class="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
 		{#each steps as item, index (item.step)}
-			<Reveal delay={index * 70}>
-				<li class="border-t-2 border-thistle pt-5">
+			<li class="border-t-2 border-thistle pt-5">
+				<Reveal delay={index * 70}>
 					<span class="font-display text-2xl text-thistle" aria-hidden="true">{item.step}</span>
 					<h3 class="mt-2 text-lg">{item.title}</h3>
 					<p class="mt-2 text-[0.9375rem] leading-relaxed">{item.body}</p>
-				</li>
-			</Reveal>
+				</Reveal>
+			</li>
 		{/each}
 	</ol>
 

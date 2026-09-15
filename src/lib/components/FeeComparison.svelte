@@ -24,9 +24,20 @@
 		lytebuy: Platform;
 		platforms: Platform[];
 		scenarios: Scenario[];
+		/** Where the call to action points. Omit to render the chart alone, so
+		 *  this stays a data display rather than a component with a marketing
+		 *  route baked into it. */
+		ctaHref?: string;
+		ctaLabel?: string;
 	}
 
-	let { lytebuy, platforms, scenarios }: Props = $props();
+	let {
+		lytebuy,
+		platforms,
+		scenarios,
+		ctaHref,
+		ctaLabel = 'Sell On Lytebuy'
+	}: Props = $props();
 
 	// Only like-for-like marketplaces are charted. Shopify (a rented storefront
 	// with no built-in demand) and Faire (wholesale) are flagged
@@ -151,6 +162,19 @@
 		<strong class="text-iron">{formatMoney(dearest.cost)}</strong> -
 		<strong class="text-iron">{formatMoney(dearest.saving)} more</strong> out of the same order.
 	</p>
+
+	{#if ctaHref}
+		<p class="mt-6">
+			<a
+				href={ctaHref}
+				class="inline-flex items-center gap-2 text-base font-medium text-accent
+				       underline underline-offset-4 hover:text-iron"
+			>
+				{ctaLabel}
+				<span aria-hidden="true">-&gt;</span>
+			</a>
+		</p>
+	{/if}
 
 	<!-- The caveats are not fine print to be buried. The comparison is only
 	     defensible with them attached, so they render at readable size. -->

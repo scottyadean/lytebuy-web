@@ -144,7 +144,12 @@
 		     fill, so the illustration would just push the bars around. -->
 		<div class="mt-12 grid items-end gap-10 lg:grid-cols-[minmax(0,48rem)_auto]">
 			<div class="max-w-3xl">
-				<FeeComparison {lytebuy} {platforms} {scenarios} />
+				<FeeComparison
+					{lytebuy}
+					{platforms}
+					{scenarios}
+					ctaHref="/sell"
+				/>
 			</div>
 			<!-- Decorative, so alt is empty: the chart beside it carries the meaning.
 			     width/height are the file's own 76.2x254 units, kept so the browser

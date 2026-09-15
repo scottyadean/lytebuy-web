@@ -42,7 +42,8 @@
 		dateModified: isoDate(data.release.updated_date),
 		author: { '@type': 'Organization', name: data.release.author },
 		publisher: { '@type': 'Organization', name: site.name },
-		mainEntityOfPage: `${origin}/press/${data.release.slug}`
+		mainEntityOfPage: `${origin}/press/${data.release.slug}`,
+		...(data.release.cover_image_url ? { image: data.release.cover_image_url } : {})
 	}}
 />
 
@@ -69,6 +70,26 @@
 			</p>
 		</div>
 	</Section>
+
+	<!-- The cover image was previously passed to <Seo> ONLY, so a release with a
+	     cover looked right when shared on social but showed no image on the page
+	     itself. Matches the blog post layout (blog/[slug]) so the two read the
+	     same. Empty alt: the headline above already carries the meaning, so a
+	     screen reader repeating it would be noise. -->
+	{#if data.release.cover_image_url}
+		<div class="container-page">
+			<!-- Same max-w-3xl as the body copy below, so the cover lines up with
+			     the text instead of running the full 76rem container width. -->
+			<div class="mx-auto max-w-3xl">
+				<img
+					src={data.release.cover_image_url}
+					alt=""
+					class="aspect-[16/9] w-full object-cover"
+					fetchpriority="high"
+				/>
+			</div>
+		</div>
+	{/if}
 
 	<Section tone="surface" space="md">
 		<div class="mx-auto max-w-3xl">
