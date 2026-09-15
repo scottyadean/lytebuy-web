@@ -15,7 +15,7 @@
 	import VendorCard from '$lib/components/VendorCard.svelte';
 	import { appLinks, site } from '$lib/config';
 	import { formatCount } from '$lib/format';
-	import research from '../../../docs/reports/market-research.json';
+	import research from '$lib/data/market-research.json';
 	import type { Platform, Scenario } from '$lib/fees';
 	import type { PageData } from './$types';
 

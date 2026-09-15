@@ -1,0 +1,358 @@
+{
+  "$comment": "LB-Web-5. Marketplace fee comparison data for the /who-we-are page (LB-Web-6). Every rate here is from the platform's own published fee schedule where one exists; where a platform does not publish a fixed rate (Groupon) that is recorded as a range with its source. Rates are decimals (0.065 = 6.5%). Do NOT hardcode computed totals in the UI - use the fee_components so a rate change here flows through to the charts.",
+  "meta": {
+    "ticket": "LB-Web-5",
+    "collected_on": "2026-09-02",
+    "currency": "USD",
+    "region": "US",
+    "notes": "Fees change often. Re-check the source_url on each platform before quoting these publicly. Percentages are expressed as decimals.",
+    "recheck_after": "2027-03-01"
+  },
+  "lytebuy": {
+    "name": "lytebuy",
+    "category": "local_marketplace",
+    "headline_rate": 0.04,
+    "headline_label": "4% at checkout",
+    "fee_components": [
+      {
+        "key": "platform_fee",
+        "label": "Platform fee",
+        "type": "percent_of_subtotal",
+        "rate": 0.04,
+        "paid_by": "buyer",
+        "notes": "Charged at checkout as a separate 'Service fee' line."
+      }
+    ],
+    "seller_pays": {
+      "listing_fee": 0.0,
+      "subscription_monthly": 0.0,
+      "payment_processing": "absorbed_by_vendor",
+      "payment_processing_note": "The vendor absorbs Stripe's processing fee (2.9% + $0.30), the same as on every other platform in this comparison. See docs/PAYMENT_SPLIT.md.",
+      "sales_tax_handling": "collected_and_remitted_by_lytebuy",
+      "sales_tax_note": "lytebuy is the marketplace facilitator: it calculates, collects and remits sales tax. Tax is a pass-through liability, not part of the vendor payout, and there is no third-party tax-engine fee (rates come from a free public table, not Stripe Tax at 0.5%/txn)."
+    },
+    "vouchers": {
+      "supported": true,
+      "commission": 0.04,
+      "notes": "Vouchers carry the same 4% as any other checkout - there is no separate voucher rate."
+    },
+    "source_url": "internal: docs/PAYMENT_SPLIT.md",
+    "verified": "Confirmed against the codebase, not marketing copy: fee mechanics in lytebuy-backend/app/services/fees.py and ledger.py."
+  },
+  "platforms": [
+    {
+      "id": "etsy",
+      "name": "Etsy",
+      "category": "handmade_marketplace",
+      "comparable_to_lytebuy": true,
+      "fee_components": [
+        {
+          "key": "listing_fee",
+          "label": "Listing fee",
+          "type": "fixed_per_listing",
+          "amount": 0.2,
+          "paid_by": "seller",
+          "notes": "Per listing, renewed every 4 months or on each sale."
+        },
+        {
+          "key": "transaction_fee",
+          "label": "Transaction fee",
+          "type": "percent_of_order_total",
+          "rate": 0.065,
+          "paid_by": "seller",
+          "applies_to_shipping": true,
+          "notes": "6.5% of the total the buyer pays, INCLUDING shipping and gift wrap."
+        },
+        {
+          "key": "payment_processing",
+          "label": "Payment processing",
+          "type": "percent_plus_fixed",
+          "rate": 0.03,
+          "fixed": 0.25,
+          "paid_by": "seller",
+          "notes": "US rate. Charged by Etsy Payments on top of the transaction fee."
+        }
+      ],
+      "optional_costs": [
+        {
+          "key": "offsite_ads",
+          "label": "Offsite Ads",
+          "type": "percent_of_order_total",
+          "rate_low_volume": 0.15,
+          "rate_high_volume": 0.12,
+          "cap_per_order": 100.0,
+          "mandatory_above_annual_sales": 10000,
+          "paid_by": "seller",
+          "notes": "15% under $10k trailing-12-month sales, 12% at or above. Becomes MANDATORY and permanently un-opt-out-able once the shop passes $10k. Only charged when an offsite ad leads to the sale."
+        },
+        {
+          "key": "etsy_plus",
+          "label": "Etsy Plus subscription",
+          "type": "fixed_monthly",
+          "amount": 10.0,
+          "paid_by": "seller",
+          "optional": true
+        }
+      ],
+      "effective_rate_note": "Mandatory fees (listing + 6.5% + 3% + $0.25) work out at about 9.7-14% of the order, highest on small orders where the flat $0.20 and $0.25 bite hardest: 14.0% on a $10 order, 10.8% on $35, 9.7% on $262. Widely-quoted '11-15%' figures are close but do not hold at the top of the range without Offsite Ads. With 15% Offsite Ads the total lands at roughly 25-29%.",
+      "effective_rate_verified": "Computed from the fee_components above; reproduces Etsy's own published example of $3.78 on a $30 item with $5 shipping exactly.",
+      "source_url": "https://www.etsy.com/legal/fees/",
+      "source_note": "etsy.com returns HTTP 403 to automated fetches; figures cross-checked across multiple current 2026 fee guides rather than read from the source page directly."
+    },
+    {
+      "id": "ebay",
+      "name": "eBay",
+      "category": "general_marketplace",
+      "comparable_to_lytebuy": true,
+      "fee_components": [
+        {
+          "key": "final_value_fee",
+          "label": "Final value fee",
+          "type": "percent_of_order_total",
+          "rate": 0.136,
+          "rate_above_threshold": 0.0235,
+          "threshold": 7500,
+          "paid_by": "seller",
+          "applies_to_shipping": true,
+          "applies_to_sales_tax": true,
+          "notes": "13.6% for most categories on the total sale INCLUDING shipping and sales tax; drops to 2.35% on the portion above $7,500 per item. Category-dependent."
+        },
+        {
+          "key": "per_order_fee",
+          "label": "Per-order fee",
+          "type": "fixed_per_order_tiered",
+          "amount_low": 0.3,
+          "amount_high": 0.4,
+          "threshold": 10.0,
+          "paid_by": "seller",
+          "notes": "$0.30 on orders of $10 or less, $0.40 above."
+        }
+      ],
+      "optional_costs": [
+        {
+          "key": "insertion_fee",
+          "label": "Insertion fee",
+          "type": "fixed_per_listing",
+          "amount": 0.35,
+          "free_allowance_monthly": 250,
+          "paid_by": "seller",
+          "notes": "First 250 listings a month are free."
+        }
+      ],
+      "effective_rate_note": "The 13.6% headline understates it: with the per-order fee the effective rate is 13.8-16.6% (16.6% on a $10 order, 14.7% on $35, 13.8% on $262), and it is charged on shipping and sales tax as well as the item.",
+      "effective_rate_verified": "Computed from the fee_components above.",
+      "source_url": "https://www.ebay.com/sellercenter/selling/seller-fees",
+      "source_note": "Read directly from eBay's seller centre."
+    },
+    {
+      "id": "groupon",
+      "name": "Groupon",
+      "category": "voucher_deals",
+      "comparable_to_lytebuy": true,
+      "is_voucher_platform": true,
+      "fee_components": [
+        {
+          "key": "commission",
+          "label": "Commission on redeemed vouchers",
+          "type": "percent_of_voucher_range",
+          "rate_min": 0.2,
+          "rate_max": 0.4,
+          "rate_typical": 0.3,
+          "paid_by": "merchant",
+          "notes": "Groupon publishes NO fixed rate - it is negotiated per merchant before launch and varies by industry, discount and deal structure. The 20/30/40% range is taken from the worked examples on Groupon's own merchant pricing page ($50 voucher nets the merchant $40 / $35 / $30)."
+        }
+      ],
+      "additional_costs": [
+        {
+          "key": "buyer_discount",
+          "label": "Buyer-facing discount",
+          "type": "merchant_absorbed_discount",
+          "paid_by": "merchant",
+          "notes": "The commission sits ON TOP of the discount the merchant already gives the buyer to run the deal. This is the real cost of a Groupon campaign and is why the effective take is far higher than the commission alone."
+        }
+      ],
+      "myths": [
+        "The widely repeated '50% discount plus 50% commission' figure is called a myth on Groupon's own pricing page. Do not publish it as fact."
+      ],
+      "payout_terms": {
+        "trigger": "redemption",
+        "notes": "The merchant is paid only when a voucher is REDEEMED, not when it is sold. Unredeemed vouchers are refunded to the customer and the merchant is not billed - but nor is it paid. Payouts run weekly on Wednesdays, ACH landing 3-5 business days later.",
+        "cash_flow_note": "This is a genuine working-capital difference vs lytebuy, where the vendor is paid out on the sale rather than waiting on redemption."
+      },
+      "effective_rate_note": "20-40% of voucher face value, negotiated, and charged on top of the promotional discount the merchant funds.",
+      "source_url": "https://www.groupon.com/merchant/pricing",
+      "source_note": "Read directly from Groupon's merchant pricing page. Their SEC 10-Q filings do not break out a gross-billings-to-revenue take rate, so no derived figure is claimed here."
+    },
+    {
+      "id": "amazon_handmade",
+      "name": "Amazon Handmade",
+      "category": "handmade_marketplace",
+      "comparable_to_lytebuy": true,
+      "fee_components": [
+        {
+          "key": "referral_fee",
+          "label": "Referral fee",
+          "type": "percent_of_order_total",
+          "rate": 0.15,
+          "paid_by": "seller",
+          "notes": "15% on all products, no minimum referral fee."
+        }
+      ],
+      "optional_costs": [
+        {
+          "key": "professional_plan",
+          "label": "Professional selling plan",
+          "type": "fixed_monthly",
+          "amount": 39.99,
+          "waived": true,
+          "paid_by": "seller",
+          "notes": "Waived for approved Handmade artisans."
+        }
+      ],
+      "effective_rate_note": "A flat 15%, with no listing fee and no separate payment-processing fee.",
+      "source_url": "https://www.runfutureproof.com/amazon-fees/handmade"
+    },
+    {
+      "id": "faire",
+      "name": "Faire",
+      "category": "wholesale_marketplace",
+      "comparable_to_lytebuy": false,
+      "comparable_note": "Wholesale (brand to retailer), not retail. Included for context on what independent makers pay elsewhere, not as a like-for-like checkout comparison.",
+      "fee_components": [
+        {
+          "key": "commission_first_order",
+          "label": "Commission, first order from a Faire-sourced retailer",
+          "type": "percent_of_order_total",
+          "rate": 0.25,
+          "paid_by": "brand",
+          "notes": "15% ongoing commission plus a one-time 10% referral fee."
+        },
+        {
+          "key": "commission_repeat",
+          "label": "Commission, repeat orders",
+          "type": "percent_of_order_total",
+          "rate": 0.15,
+          "paid_by": "brand"
+        },
+        {
+          "key": "new_customer_fee",
+          "label": "New customer fee",
+          "type": "fixed_per_new_customer",
+          "amount": 10.0,
+          "paid_by": "brand"
+        }
+      ],
+      "source_url": "https://www.faire.com/support/articles/360040446591"
+    },
+    {
+      "id": "shopify",
+      "name": "Shopify",
+      "category": "self_hosted_storefront",
+      "comparable_to_lytebuy": false,
+      "comparable_note": "A storefront the vendor rents and must drive their own traffic to, not a marketplace with built-in demand. Its low per-order rate comes with a monthly subscription and no discovery.",
+      "fee_components": [
+        {
+          "key": "subscription",
+          "label": "Subscription",
+          "type": "fixed_monthly_tiered",
+          "tiers": [
+            {
+              "name": "Basic",
+              "monthly": 39.0,
+              "monthly_annual_billing": 29.0,
+              "processing_rate": 0.029,
+              "processing_fixed": 0.3
+            },
+            {
+              "name": "Grow",
+              "monthly": 105.0,
+              "monthly_annual_billing": 79.0,
+              "processing_rate": 0.027,
+              "processing_fixed": 0.3
+            },
+            {
+              "name": "Advanced",
+              "monthly": 399.0,
+              "monthly_annual_billing": 299.0,
+              "processing_rate": 0.025,
+              "processing_fixed": 0.3
+            },
+            {
+              "name": "Plus",
+              "monthly": 2300.0,
+              "monthly_annual_billing": null,
+              "processing_rate": null,
+              "processing_fixed": null
+            }
+          ],
+          "paid_by": "seller"
+        },
+        {
+          "key": "third_party_gateway_fee",
+          "label": "Extra fee for not using Shopify Payments",
+          "type": "percent_of_order_total_tiered",
+          "rates": {
+            "Basic": 0.02,
+            "Grow": 0.01,
+            "Advanced": 0.006,
+            "Plus": 0.002
+          },
+          "paid_by": "seller"
+        }
+      ],
+      "source_url": "https://www.shopify.com/pricing"
+    }
+  ],
+  "reference": {
+    "stripe": {
+      "name": "Stripe",
+      "note": "Not a competitor - the processor underneath lytebuy and most platforms here. Included so the charts can show processing cost consistently, since it is a real cost on EVERY row including lytebuy's.",
+      "online_card_rate": 0.029,
+      "online_card_fixed": 0.3,
+      "stripe_tax_basic_rate": 0.005,
+      "stripe_tax_note": "lytebuy does NOT pay this - tax rates come from a free public table, so there is no per-transaction tax-engine fee.",
+      "connect_platform_rate_from": 0.0025,
+      "source_url": "https://stripe.com/pricing"
+    }
+  },
+  "comparison_scenarios": [
+    {
+      "id": "small_order",
+      "label": "$30 item, $5 shipping",
+      "item_price": 30.0,
+      "shipping": 5.0,
+      "chip_label": "$30 order"
+    },
+    {
+      "id": "typical_order",
+      "label": "$75 item, free shipping",
+      "item_price": 75.0,
+      "shipping": 0.0,
+      "chip_label": "$75 order"
+    },
+    {
+      "id": "large_order",
+      "label": "$250 item, $12 shipping",
+      "item_price": 250.0,
+      "shipping": 12.0,
+      "chip_label": "$250 order"
+    },
+    {
+      "id": "voucher",
+      "label": "$50 voucher",
+      "item_price": 50.0,
+      "shipping": 0.0,
+      "voucher": true,
+      "note": "The like-for-like case against Groupon.",
+      "chip_label": "$50 voucher"
+    }
+  ],
+  "honest_caveats": [
+    "lytebuy's 4% is paid by the BUYER at checkout; most competitor rates here are paid by the SELLER out of the sale. A chart that stacks them side by side is comparing the total cost of selling through each platform, which is fair, but the label should say who pays.",
+    "The vendor absorbs the Stripe processing fee on lytebuy, exactly as sellers do on Etsy, eBay and Shopify. Do not present lytebuy as covering it - the codebase says otherwise (docs/PAYMENT_SPLIT.md).",
+    "Groupon has no published rate. Present it as a 20-40% range from their own worked examples, never as a single number, and never repeat the '50%' folklore their pricing page explicitly calls a myth.",
+    "Shopify and Faire are not like-for-like: Shopify is a rented storefront with no built-in demand, Faire is wholesale. Both are flagged comparable_to_lytebuy: false. Charting them as direct rivals would be misleading.",
+    "Etsy's headline 6.5% is not the real cost - the listing fee, 3% + $0.25 processing and possibly-mandatory 15% Offsite Ads are what take it to 11-15%+. The comparison should use the effective rate, not the headline.",
+    "The genuine lytebuy advantages that are NOT just the percentage: sales tax is calculated, collected and remitted by the platform at no per-transaction tax-engine cost, and voucher vendors are paid on the sale rather than waiting for redemption as they do on Groupon."
+  ]
+}

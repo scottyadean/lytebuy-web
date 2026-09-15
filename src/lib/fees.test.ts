@@ -5,7 +5,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import research from '../../../docs/reports/market-research.json';
+import research from '$lib/data/market-research.json';
 import {
 	barPercent,
 	componentCost,

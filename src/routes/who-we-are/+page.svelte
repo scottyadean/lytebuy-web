@@ -8,7 +8,7 @@
 	import StatBlock from '$lib/components/StatBlock.svelte';
 	import { contact } from '$lib/config';
 	import FeeComparison from '$lib/components/FeeComparison.svelte';
-	import research from '../../../../docs/reports/market-research.json';
+	import research from '$lib/data/market-research.json';
 	import type { Platform, Scenario } from '$lib/fees';
 
 	// LB-Web-6. Build-time import of the LB-Web-5 research file - it is a static

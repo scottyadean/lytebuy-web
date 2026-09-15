@@ -17,7 +17,9 @@ import amplifyAdapter from 'amplify-adapter';
 //
 // AWS_APP_ID is set by the Amplify build container and by nothing else, which is
 // what makes this switch reliable rather than a guess.
-const adapter = process.env.AWS_APP_ID ? amplifyAdapter : nodeAdapter;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isAmplifyBuild = Boolean((globalThis as any).process?.env?.AWS_APP_ID);
+const adapter = isAmplifyBuild ? amplifyAdapter : nodeAdapter;
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
