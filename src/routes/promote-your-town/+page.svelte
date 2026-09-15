@@ -1,6 +1,6 @@
 <style>
 	.stree-lamp{
-		background: url(img/lantern-post.jpg) -10px -50px no-repeat; 
+		background: url("/img/lantern-post.jpg") -10px -50px no-repeat; 
 		background-size: 350px auto;
 	}
 </style>
