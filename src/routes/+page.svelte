@@ -94,7 +94,7 @@
 	size="full"
 	title="Main street"
 	accent="in your pocket."
-	lede="Lytebuy puts the shops, makers and kitchens of your town on the map and hands the little guy the same reach the giants pay millions for."
+	lede="Lytebuy puts the shops, makers and kitchens of your town on the map and hands business owners the same reach the giants pay millions for."
 	video="/video/placerville-hero.mp4"
 	poster="/img/placerville-hero-poster.jpg"
 >

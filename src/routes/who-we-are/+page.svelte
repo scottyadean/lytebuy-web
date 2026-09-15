@@ -23,7 +23,7 @@
 			body: 'We stay out of the flow of your funds, keep a per-vendor ledger, and never quietly change the terms. If we cannot do something honestly we would rather not ship it.'
 		},
 		{
-			title: 'A low barrier for the little guy',
+			title: 'A low barrier for the small business',
 			body: 'Progressive onboarding means you can be selling before you have finished filling in forms. No agency retainer, no minimum spend, no gatekeeping.'
 		},
 		{
