@@ -1,0 +1,35 @@
+# Amplify Hosting build settings for the lytebuy marketing site (SvelteKit, SSR).
+#
+# WHY baseDirectory IS build/ AND NOT build/static:
+# vite.config.ts picks the adapter by platform. In the Amplify container
+# AWS_APP_ID is set, so it uses amplify-adapter, which writes the SSR layout
+# Amplify expects - build/deploy-manifest.json plus compute/ and static/.
+# Locally that variable is unset and it falls back to adapter-node, so
+# `npm run preview` and the Dockerfile keep working unchanged.
+#
+# The first build here FAILED after compiling cleanly, because adapter-node's
+# build/index.js is a standalone Node server and Amplify cannot deploy that shape.
+# Nothing was wrong with the code. (adapter-auto does not help: it only supports
+# Cloudflare, Netlify, Node and Vercel.)
+#
+# ENV VARS ARE NOT IN THIS FILE. Set them in the Amplify console under
+# Environment variables - see lytebuy-web/.env.production for the list and the
+# values prod expects:
+#   BLOG_API_URL, BLOG_API_KEY, PUBLIC_SITE_URL, PUBLIC_GA_ID, LYTEBUY_API_URL
+# BLOG_API_KEY is a secret; it belongs in the console, never committed here.
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
