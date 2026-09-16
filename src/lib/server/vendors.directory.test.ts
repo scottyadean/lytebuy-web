@@ -1,8 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('$env/dynamic/private', () => ({
-	env: { LYTEBUY_API_URL: 'http://api.test/api/v1', LYTEBUY_APP_URL: 'https://app.test' }
-}));
+vi.mock('$env/static/private', () => ({ LYTEBUY_API_URL: 'http://api.test/api/v1', LYTEBUY_APP_URL: 'https://app.test' }));
 
 const { getDirectoryVendors, tradeLabel, DIRECTORY_LIMIT } = await import('./vendors');
 

@@ -6,7 +6,13 @@
  *  what to render.
  */
 
-import { env } from '$env/dynamic/private';
+// $env/STATIC/private, not dynamic. Amplify's SSR compute tier gets NO runtime
+// environment - console env vars reach the build container only - so a dynamic
+// read returns undefined in production and every baseUrl() below silently falls
+// back to its localhost default. static/ inlines the values at build time from
+// the .env.production that amplify.yml writes, which is the only seam that
+// survives the trip to compute.
+import * as env from '$env/static/private';
 
 function baseUrl(): string {
 	// The FastAPI app mounts everything under /api/v1.

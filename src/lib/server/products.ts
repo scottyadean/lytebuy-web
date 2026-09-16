@@ -11,7 +11,13 @@
  *  real vendor listed. Reading the API means the section fills itself in.
  */
 
-import { env } from '$env/dynamic/private';
+// $env/STATIC/private, not dynamic. Amplify's SSR compute tier gets NO runtime
+// environment - console env vars reach the build container only - so a dynamic
+// read returns undefined in production and every baseUrl() below silently falls
+// back to its localhost default. static/ inlines the values at build time from
+// the .env.production that amplify.yml writes, which is the only seam that
+// survives the trip to compute.
+import * as env from '$env/static/private';
 
 /** What ProductCard needs. Deliberately the card's shape, not the API's, so the
  *  backend's field names do not leak into the markup. */

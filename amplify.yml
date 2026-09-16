@@ -12,11 +12,33 @@
 # Nothing was wrong with the code. (adapter-auto does not help: it only supports
 # Cloudflare, Netlify, Node and Vercel.)
 #
-# ENV VARS ARE NOT IN THIS FILE. Set them in the Amplify console under
-# Environment variables - see lytebuy-web/.env.production for the list and the
-# values prod expects:
-#   BLOG_API_URL, BLOG_API_KEY, PUBLIC_SITE_URL, PUBLIC_GA_ID, LYTEBUY_API_URL
+# VALUES ARE NOT IN THIS FILE. Set them in the Amplify console under
+# Environment variables - see lytebuy-web/.env.production for the list:
+#   BLOG_API_URL, BLOG_API_KEY, PUBLIC_SITE_URL, PUBLIC_GA_ID, LYTEBUY_API_URL,
+#   LYTEBUY_APP_URL
 # BLOG_API_KEY is a secret; it belongs in the console, never committed here.
+#
+# BUT THE CONSOLE ONLY REACHES THE BUILD CONTAINER. Amplify passes NOTHING to the
+# SSR compute tier - it treats console env vars as build-time secrets. Everything
+# server-side here reads $env/dynamic/private, which is process.env at REQUEST
+# time, so without the line below every one of those values is undefined in
+# production and each module quietly falls back to its localhost default.
+#
+# That is not hypothetical: it is why https://lytebuy.com/blog said "Nothing
+# published yet" while the API had a published post. BLOG_API_URL was undefined,
+# baseUrl() fell back to http://localhost:5600/local, the fetch failed, and
+# listContent() caught the error and returned an empty list - exactly as
+# designed. The page degraded silently instead of erroring, so nothing looked
+# broken.
+#
+# The grep copies them out of the build environment into .env.production, which
+# the build then bakes in. Named explicitly rather than a prefix match: a blanket
+# `env >>` would dump the whole build environment, AWS credentials included, into
+# a deployed artifact.
+#
+# `|| true` because grep exits 1 when it matches NOTHING, and under the build's
+# error handling a non-zero exit fails the whole build.
+# https://docs.aws.amazon.com/amplify/latest/userguide/ssr-environment-variables.html
 version: 1
 frontend:
   phases:
@@ -25,6 +47,8 @@ frontend:
         - npm ci
     build:
       commands:
+        - env | grep -e '^BLOG_API_URL=' -e '^BLOG_API_KEY=' -e '^PUBLIC_SITE_URL=' -e '^PUBLIC_GA_ID=' -e '^LYTEBUY_API_URL=' -e '^LYTEBUY_APP_URL=' >> .env.production || true
+        - echo "vars written to .env.production:" && cut -d= -f1 .env.production 2>/dev/null || echo "NONE - console env vars did not reach the build shell"
         - npm run build
   artifacts:
     baseDirectory: build

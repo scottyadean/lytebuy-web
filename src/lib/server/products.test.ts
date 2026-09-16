@@ -1,8 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('$env/dynamic/private', () => ({
-	env: { LYTEBUY_API_URL: 'http://api.test/api/v1' }
-}));
+vi.mock('$env/static/private', () => ({ LYTEBUY_API_URL: 'http://api.test/api/v1' }));
 
 const { formatPrice, getFeedProducts, FEED_LIMIT } = await import('./products');
 
