@@ -12,6 +12,7 @@
 	import Section from '$lib/components/Section.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import StatBlock from '$lib/components/StatBlock.svelte';
+	import VendorCard from '$lib/components/VendorCard.svelte';
 	import { appLinks, site } from '$lib/config';
 	import { formatCount } from '$lib/format';
 	import research from '$lib/data/market-research.json';
@@ -58,11 +59,11 @@
 		}
 	];
 
-	// Whether any real vendor has signed up, from GET /vendors/vendor-count.
-	// Drives the neighbourhood section's heading and body: with none, the page
-	// recruits instead of claiming a directory it does not have. This replaced
-	// six invented businesses with real-sounding names and towns.
-	const hasVendors = $derived((data.vendorCount ?? 0) > 0);
+	// Real active vendors from GET /vendors/directory (LB-8.7). Empty when
+	// nobody has signed up yet or the API is unreachable, so the neighbourhood
+	// section recruits instead of claiming a directory it does not have. This
+	// replaced six invented businesses with real-sounding names and towns.
+	const vendors = $derived(data.vendors);
 
 	// Real listings from the products API (see lib/server/products.ts). Empty
 	// when nothing is listed yet or the API is unreachable, so the feed section
@@ -443,25 +444,25 @@
 		     count. "The people already on the map" over an invented directory
 		     was the site asserting something untrue about itself. -->
 		<h2 class="max-w-2xl text-display leading-[1.05]">
-			{hasVendors ? 'The people already on the map.' : 'Be first on the map.'}
+			{vendors.length ? 'The people already on the map.' : 'Be first on the map.'}
 		</h2>
 	</Reveal>
 
-	{#if hasVendors}
-		<!-- LB-WEB-14: there is no public vendor LIST endpoint yet - only
-		     /vendors/featured, /vendors/vendor-count and /vendors/{ref}. Until one
-		     exists the directory cannot be rendered from real data, so this shows
-		     the count and sends people to the app rather than inventing shops. -->
-		<Reveal>
-			<p class="mt-8 max-w-2xl text-lg text-granite">
-				{formatCount(data.vendorCount ?? 0)}
-				{(data.vendorCount ?? 0) === 1 ? 'business is' : 'businesses are'} setting up on
-				lytebuy. Browse them in the app.
-			</p>
-			<div class="mt-8">
-				<Button href={appLinks.web} variant="primary">Open the app</Button>
-			</div>
-		</Reveal>
+	{#if vendors.length}
+		<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{#each vendors as vendor, index (vendor.slug)}
+				<Reveal delay={index * 60}>
+					<a href={vendor.storeUrl} class="block">
+						<VendorCard
+							name={vendor.name}
+							trade={vendor.trade}
+							town={vendor.town}
+							image={vendor.image}
+						/>
+					</a>
+				</Reveal>
+			{/each}
+		</div>
 	{:else}
 		<Reveal>
 			<p class="mt-8 max-w-2xl text-lg text-granite">

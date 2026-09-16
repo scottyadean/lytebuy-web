@@ -109,3 +109,82 @@ export async function getFeaturedVendor(fetcher: typeof fetch): Promise<Featured
 		return null;
 	}
 }
+
+/** One vendor in the public directory grid.
+ *
+ *  Mirrors VendorDirectoryRow from the backend (LB-8.7) - deliberately leaner
+ *  than the storefront payload, because a grid of cards does not need follower
+ *  counts or live locations and fetching them costs three extra queries a row.
+ */
+export type DirectoryVendor = {
+	name: string;
+	trade: string | null;
+	town: string | null;
+	image: string | null;
+	slug: string;
+	storeUrl: string;
+};
+
+/** How many cards the directory grid shows. The grid is 3 columns at lg, so 24
+ *  fills exactly eight rows and matches the API's own default. */
+export const DIRECTORY_LIMIT = 24;
+
+/** Turn a business_type enum into the card's second line.
+ *
+ *  A named helper because the raw value is a snake_case enum ("food_truck") and
+ *  printing it unchanged on a marketing page looks like leaked database
+ *  internals. One place, so every surface spells it the same way.
+ */
+export function tradeLabel(businessType: unknown): string | null {
+	if (typeof businessType !== 'string' || !businessType) return null;
+	const words = businessType.replace(/_/g, ' ').trim();
+	return words ? words.charAt(0).toUpperCase() + words.slice(1) : null;
+}
+
+/** Active vendors for the home page directory.
+ *
+ *  Returns [] when nobody has signed up yet OR the API is unreachable - the
+ *  caller renders the same "be first on the map" state for both, because to a
+ *  visitor they are the same thing.
+ */
+export async function getDirectoryVendors(fetcher: typeof fetch): Promise<DirectoryVendor[]> {
+	const url = `${baseUrl()}/vendors/directory?limit=${DIRECTORY_LIMIT}`;
+
+	try {
+		const response = await fetcher(url);
+		if (!response.ok) {
+			console.error(`vendors: directory responded ${response.status}`);
+			return [];
+		}
+		const body = (await response.json()) as unknown;
+		const items = (body as { items?: unknown })?.items;
+		if (!Array.isArray(items)) return [];
+
+		return items
+			.map((raw): DirectoryVendor | null => {
+				if (!raw || typeof raw !== 'object') return null;
+				const row = raw as Record<string, unknown>;
+				const name = typeof row.business_name === 'string' ? row.business_name : '';
+				const slug = typeof row.slug === 'string' ? row.slug : '';
+				// Without a name there is no card, and without a slug the card
+				// cannot link anywhere - drop rather than render a dead tile.
+				if (!name || !slug) return null;
+
+				return {
+					name,
+					// The vendor's own tagline beats a generic business type when
+					// they have written one.
+					trade:
+						(typeof row.tagline === 'string' && row.tagline) || tradeLabel(row.business_type),
+					town: typeof row.town === 'string' && row.town ? row.town : null,
+					image: typeof row.logo_url === 'string' && row.logo_url ? row.logo_url : null,
+					slug,
+					storeUrl: `${appUrl()}/store/${slug}`
+				};
+			})
+			.filter((v): v is DirectoryVendor => v !== null);
+	} catch (cause) {
+		console.error('vendors: directory failed', cause);
+		return [];
+	}
+}

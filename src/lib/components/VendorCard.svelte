@@ -1,10 +1,12 @@
 <script lang="ts">
 	interface Props {
 		name: string;
-		trade: string;
-		town: string;
-		/** Absent until the vendor directory is wired to the API. */
-		image?: string;
+		/** What kind of business. Optional: the API returns null when the vendor
+		 *  has not set a business type. */
+		trade?: string | null;
+		/** Town from the vendor's active location, null when none is pinned. */
+		town?: string | null;
+		image?: string | null;
 	}
 
 	let { name, trade, town, image }: Props = $props();
@@ -37,7 +39,11 @@
 
 	<div class="min-w-0">
 		<p class="truncate font-medium text-iron">{name}</p>
-		<p class="truncate text-sm text-charcoal">{trade}</p>
-		<p class="truncate text-xs text-granite">{town}</p>
+		{#if trade}
+			<p class="truncate text-sm text-charcoal">{trade}</p>
+		{/if}
+		{#if town}
+			<p class="truncate text-xs text-granite">{town}</p>
+		{/if}
 	</div>
 </div>
