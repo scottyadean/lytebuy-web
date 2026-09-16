@@ -49,7 +49,7 @@
 
 <Seo
 	title="Start selling on Lytebuy"
-	description="Listing on Lytebuy is free. You keep 100% of your online sale price, and taking a card in person costs just 1.2%. Here is how to sign up, how you get paid, and how tax works."
+	description="Listing on Lytebuy is free. Selling costs 4% of the item price - no listing fees, no monthly fee - and taking a card in person is 1.2%. Here is how to sign up, how you get paid, and how tax works."
 	schema={{
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
@@ -59,7 +59,7 @@
 				name: 'What does it cost to sell on Lytebuy?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'Listing your business and posting promotions is free, with no monthly or setup fee. On an online sale a small platform fee is added to the buyer at checkout, so you keep 100% of your sale price. Taking a card in person with Tap to Pay costs 1.2% of the sale.'
+					text: 'Listing your business and posting promotions is free, with no monthly or setup fee. An online sale costs 4% of the item price - never of your shipping. Taking a card in person with Tap to Pay costs 1.2% of the sale.'
 				}
 			},
 			{
@@ -85,7 +85,7 @@
 <Hero
 	title="Start selling"
 	accent="on lytebuy."
-	lede="Free to list. Free to post. You keep 100% of your online sale price - and just 1.2% in person."
+	lede="Free to list. Free to post. 4% when you sell online, 1.2% in person, and nothing at all until something sells."
 	poster="/img/come-in-were-awesome.jpg"
 	posterAlt="A hanging shop sign reading Come in, we're awesome"
 >
@@ -156,7 +156,7 @@
 	<Reveal>
 		<Eyebrow>What it costs</Eyebrow>
 		<h2 class="max-w-3xl text-display leading-[1.05]">
-			Free to list. Nothing extra taken online, 1.2% in person.
+			Free to list. 4% of the item price online, 1.2% in person.
 		</h2>
 		<div class="mt-8 max-w-2xl space-y-5 text-lg leading-relaxed">
 			<p>

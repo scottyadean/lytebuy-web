@@ -138,7 +138,14 @@ export function componentCost(component: FeeComponent, order: Order): number {
  */
 export function platformCost(platform: Platform, order: Order): number {
 	const components = platform.fee_components.filter(
-		(component) => component.key !== 'commission_repeat'
+		(component) =>
+			component.key !== 'commission_repeat' &&
+			// BUYER-PAID COMPONENTS ARE NOT A SELLER COST. lytebuy charges the vendor
+			// a 4% commission AND the buyer a separate 4% service fee at checkout;
+			// summing both here reported 8% and made lytebuy look twice as expensive
+			// as it is. Competitor components are all seller-paid, so this filter is
+			// a no-op for them - see honest_caveats in market-research.json.
+			component.paid_by !== 'buyer'
 	);
 	return roundMoney(
 		components.reduce((sum, component) => sum + componentCost(component, order), 0)

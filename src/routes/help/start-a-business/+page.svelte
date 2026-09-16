@@ -176,7 +176,7 @@
 		},
 		{
 			q: 'What does it cost to sell on Lytebuy?',
-			a: 'Listing your business and posting promotions is free. On an online sale, a 4% platform fee is added to the buyer at checkout, so you keep 100% of your sale price. Taking a card in person costs 1.2% of the sale, plus the card processing fee.'
+			a: 'Listing your business and posting promotions is free - there is no monthly fee and no charge until something sells. An online sale costs a 4% commission on the item price, never on your shipping. Taking a card in person costs 1.2% of the sale. Card processing (2.9% + 30c) comes out of the sale as it does on every marketplace, and withdrawing to your bank costs 1% capped at $25.'
 		},
 		{
 			q: 'How are taxes handled?',

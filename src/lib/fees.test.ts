@@ -227,3 +227,19 @@ describe('research data integrity', () => {
 		}
 	});
 });
+
+describe('seller cost excludes buyer-paid fees', () => {
+	it('does not count lytebuy buyer service fee against the vendor', () => {
+		// lytebuy charges the VENDOR 4% and the BUYER 4% separately. Summing both
+		// reported 8% and made lytebuy look twice as expensive as it is. Only the
+		// commission is a seller cost.
+		expect(platformCost(lytebuy, { itemPrice: 100, shipping: 0 })).toBe(4);
+	});
+
+	it('still counts every seller-paid component', () => {
+		// The filter must not quietly drop real vendor costs: competitors are all
+		// seller-paid, so their totals are unchanged by it.
+		const etsy = platforms.find((p) => p.id === 'etsy')!;
+		expect(platformCost(etsy, { itemPrice: 100, shipping: 0 })).toBeGreaterThan(9);
+	});
+});
