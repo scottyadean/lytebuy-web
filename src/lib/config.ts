@@ -27,15 +27,19 @@ export const nav = [
 ] as const;
 
 export const appLinks = {
-	// Placeholders until the listings are live. AppBadges renders a "coming
-	// soon" state rather than a dead link when these are empty.
+	// Placeholders until the store listings are live. AppBadges renders a
+	// "coming soon" state rather than a dead link when these are empty.
 	ios: '',
 	android: '',
-	web: 'http://localhost:3001',
-	// Where a vendor lands to create their selling account. Still to be
-	// decided; while it is empty the /sell page points people at the app and
-	// the contact form instead of rendering a dead button.
-	vendorSignup: ''
+	// The deployed Expo web client. This was 'http://localhost:3001' - a dev
+	// placeholder that would have shipped every "Open the app" button on the
+	// marketing site as a dead link pointing at the visitor's own machine.
+	web: 'https://app.lytebuy.com',
+	// Where a vendor lands to create their selling account: the client's own
+	// /sell route (lytebuy-client/app/sell.tsx). Both urls verified live (200)
+	// before being wired up here. While this was empty the /sell page fell back
+	// to the contact form, hiding the primary vendor call to action.
+	vendorSignup: 'https://app.lytebuy.com/sell'
 } as const;
 
 export const contact = {

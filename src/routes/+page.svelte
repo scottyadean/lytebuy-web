@@ -12,7 +12,6 @@
 	import Section from '$lib/components/Section.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import StatBlock from '$lib/components/StatBlock.svelte';
-	import VendorCard from '$lib/components/VendorCard.svelte';
 	import { appLinks, site } from '$lib/config';
 	import { formatCount } from '$lib/format';
 	import research from '$lib/data/market-research.json';
@@ -59,22 +58,18 @@
 		}
 	];
 
-	// Illustrative until the vendor directory is wired to the storefront API.
-	const vendors = [
-		{ name: 'Estrela Bakery', trade: 'Bread and pastry', town: 'Placerville, CA' },
-		{ name: 'Hangtown Records', trade: 'Vinyl and repairs', town: 'Placerville, CA' },
-		{ name: 'Cedar & Pine', trade: 'Handmade furniture', town: 'Camino, CA' },
-		{ name: 'Apple Pantry Farm', trade: 'Orchard and cider', town: 'Apple Hill, CA' },
-		{ name: 'Blue Plate Diner', trade: 'Breakfast all day', town: 'Placerville, CA' },
-		{ name: 'Fair Trade Threads', trade: 'Vintage clothing', town: 'Coloma, CA' }
-	];
+	// Whether any real vendor has signed up, from GET /vendors/vendor-count.
+	// Drives the neighbourhood section's heading and body: with none, the page
+	// recruits instead of claiming a directory it does not have. This replaced
+	// six invented businesses with real-sounding names and towns.
+	const hasVendors = $derived((data.vendorCount ?? 0) > 0);
 
-	const products = [
-		{ name: 'Sourdough, baked this morning', vendor: 'Estrela Bakery', price: '$7', deal: '30% off' },
-		{ name: 'Walnut serving board', vendor: 'Cedar & Pine', price: '$48' },
-		{ name: 'Guitar lessons, first hour', vendor: 'Hangtown Records', price: '$35', deal: 'New' },
-		{ name: 'Cider flight for two', vendor: 'Apple Pantry Farm', price: '$18' }
-	];
+	// Real listings from the products API (see lib/server/products.ts). Empty
+	// when nothing is listed yet or the API is unreachable, so the feed section
+	// renders an honest empty state instead of invented inventory. It was four
+	// hardcoded products with made-up vendors and prices, which read as real
+	// stock to a visitor.
+	const products = $derived(data.products);
 </script>
 
 <Seo
@@ -404,41 +399,81 @@
 				<Eyebrow>Fresh on lytebuy</Eyebrow>
 				<h2 class="text-display leading-[1.05]">What is good today.</h2>
 			</div>
-			<Button href={appLinks.web} variant="secondary">See everything</Button>
+			{#if products.length}
+				<Button href={appLinks.web} variant="secondary">See everything</Button>
+			{/if}
 		</div>
 	</Reveal>
 
-	<div class="mt-12 grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
-		{#each products as product, index (product.name)}
-			<Reveal delay={index * 70}>
-				<ProductCard {...product} />
-			</Reveal>
-		{/each}
-	</div>
-
-	<p class="mt-8 text-sm text-granite">
-		A sample of the feed. Live listings arrive with the product API.
-	</p>
+	{#if products.length}
+		<div class="mt-12 grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
+			{#each products as product, index (product.name)}
+				<Reveal delay={index * 70}>
+					<ProductCard {...product} />
+				</Reveal>
+			{/each}
+		</div>
+	{:else}
+		<!-- No listings yet. Says so plainly and points at the one action that
+		     changes it - a marketplace with no sellers needs sellers, not a
+		     "browse" button that leads to an empty grid. -->
+		<Reveal>
+			<div
+				class="mt-12 rounded-2xl border border-dashed border-granite/30 px-6 py-16 text-center"
+			>
+				<p class="text-xl font-medium text-ink">No listings yet. Stay tuned.</p>
+				<p class="mx-auto mt-3 max-w-md text-granite">
+					The first shops are setting up now. If you run one, this is a good moment to be
+					early.
+				</p>
+				<div class="mt-8 flex flex-wrap justify-center gap-3">
+					<Button href="/sell" variant="primary">Start selling</Button>
+					<Button href={appLinks.web} variant="secondary">Open the app</Button>
+				</div>
+			</div>
+		</Reveal>
+	{/if}
 </Section>
 
 <!-- Vendors -->
 <Section id="vendors" tone="canvas">
 	<Reveal>
 		<Eyebrow>The neighbourhood</Eyebrow>
-		<h2 class="max-w-2xl text-display leading-[1.05]">The people already on the map.</h2>
+		<!-- The heading is a claim about reality, so it follows the real vendor
+		     count. "The people already on the map" over an invented directory
+		     was the site asserting something untrue about itself. -->
+		<h2 class="max-w-2xl text-display leading-[1.05]">
+			{hasVendors ? 'The people already on the map.' : 'Be first on the map.'}
+		</h2>
 	</Reveal>
 
-	<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each vendors as vendor, index (vendor.name)}
-			<Reveal delay={index * 60}>
-				<VendorCard {...vendor} />
-			</Reveal>
-		{/each}
-	</div>
-
-	<p class="mt-8 text-sm text-granite">
-		An illustrative directory. Real vendor pages land with the storefront API.
-	</p>
+	{#if hasVendors}
+		<!-- LB-WEB-14: there is no public vendor LIST endpoint yet - only
+		     /vendors/featured, /vendors/vendor-count and /vendors/{ref}. Until one
+		     exists the directory cannot be rendered from real data, so this shows
+		     the count and sends people to the app rather than inventing shops. -->
+		<Reveal>
+			<p class="mt-8 max-w-2xl text-lg text-granite">
+				{formatCount(data.vendorCount ?? 0)}
+				{(data.vendorCount ?? 0) === 1 ? 'business is' : 'businesses are'} setting up on
+				lytebuy. Browse them in the app.
+			</p>
+			<div class="mt-8">
+				<Button href={appLinks.web} variant="primary">Open the app</Button>
+			</div>
+		</Reveal>
+	{:else}
+		<Reveal>
+			<p class="mt-8 max-w-2xl text-lg text-granite">
+				Nobody has claimed a spot here yet. If you run a shop, a stall or a van on your
+				main street, you can be the first listing your neighbours see.
+			</p>
+			<div class="mt-8 flex flex-wrap gap-3">
+				<Button href="/sell" variant="primary">Start selling</Button>
+				<Button href="/promote-your-town" variant="secondary">Promote your town</Button>
+			</div>
+		</Reveal>
+	{/if}
 </Section>
 
 <!-- Recent writing -->
