@@ -27,7 +27,7 @@
 		surface: 'bg-surface text-charcoal',
 		canvas: 'bg-canvas text-charcoal',
 		// Dark band. Headings inside inherit white via the [&_h2] rules rather
-		// than every caller remembering to set a colour.
+		// than every caller remembering to set a color.
 		iron: 'bg-iron text-dust [&_h2]:text-white [&_h3]:text-white',
 		accent: 'bg-accent-soft text-charcoal'
 	};

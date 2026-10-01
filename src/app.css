@@ -42,7 +42,7 @@
 	--color-surface: #ffffff;
 
 	/* Thistle darkened to 40% lightness, hue preserved. Source thistle is 2.02:1
-	   on white -- unreadable -- and this is a TEXT colour (links, prices, eyebrow
+	   on white -- unreadable -- and this is a TEXT color (links, prices, eyebrow
 	   labels). Keeps the palette's purple while staying legible at 6.66:1. */
 	--color-accent: #685577;
 	/* Thistle tint for badge fills carrying accent text (5.45:1). */
