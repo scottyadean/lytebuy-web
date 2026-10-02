@@ -7,7 +7,7 @@
 <script lang="ts">
 	// LB-WEB-11. "Promote your town" - the fork in the road.
 	//
-	// There are two ways to drive foot traffic to your own main street, and until
+	// There are three ways to drive foot traffic to your own main street, and until
 	// now a visitor had to already know which one they were: /sell and
 	// /lyte-bearer both exist but nothing tells you which is yours. Scott: "This
 	// should almost be like a step by step of how to do this so it is very clear
@@ -54,13 +54,33 @@
 			],
 			cta: { href: '/lyte-bearer', label: 'Become a lyte bearer' },
 			foot: 'Free to join. No application and no approval queue.'
+		},
+		{
+			// THE SMALLEST ASK ON THE PAGE. The other two want a shop or a
+			// commission arrangement; this one wants a Saturday afternoon's
+			// knowledge. Last, because it is the fallback for a reader who is
+			// neither of the above.
+			id: 'local',
+			kicker: 'You just know the place',
+			title: 'As a local',
+			blurb:
+				'No shop, no program, no commission. Make a Place Playlist - the shops, stops and spots you would take a friend to - and share the link.',
+			steps: [
+				'Get the app, or open it in any browser, and sign in.',
+				'Name your playlist.',
+				'Add stops: a shop, something to buy, or any place worth a look.',
+				'Say why each one is worth it - the note is the part people read.',
+				'Share the link. Anyone can open it, no account needed.'
+			],
+			cta: { href: '/collaborate', label: 'Build a Place Playlist' },
+			foot: 'Free. No approval, and nothing to sell.'
 		}
 	];
 </script>
 
 <Seo
 	title="Promote your town"
-	description="Two ways to drive foot traffic to your own main street: sell what you make, or promote the shops you already love. Here is the step-by-step for each."
+	description="Three ways to drive foot traffic to your own main street: sell what you make, promote the shops you already love, or share a Place Playlist of the spots worth a visit. Here is the step-by-step for each."
 	schema={{
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
@@ -70,7 +90,7 @@
 				name: 'How can I help my town on Lytebuy?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'Two ways. If you sell something - food, craft, a service - list it as a vendor so neighbours can find you. If you do not sell anything but know the good local shops, become a lyte bearer: promote them and earn a share of what you refer.'
+					text: 'Three ways. If you sell something - food, craft, a service - list it as a vendor so neighbours can find you. If you do not sell anything but know the good local shops, become a lyte bearer: promote them and earn a share of what you refer. Or make a Place Playlist - a shared list of the shops and spots worth a visit - which is free and needs no approval.'
 				}
 			},
 			{
@@ -88,7 +108,7 @@
 <Hero
 	title="Promote"
 	accent="your town."
-	lede="Two ways to drive foot traffic to your own main street. Pick the one that sounds like you."
+	lede="Three ways to drive foot traffic to your own main street. Pick the one that sounds like you."
 	poster="/img/main-street-day.jpg"
 	posterAlt="Shopfronts and hanging flower baskets along a small-town main street"
 >
@@ -97,16 +117,16 @@
 	{/snippet}
 </Hero>
 
-<!-- The fork. Both paths side by side from md up so the choice is one glance. -->
+<!-- The fork. Paths side by side from md up so the choice is one glance. -->
 <Section id="pick-your-path" tone="surface">
 	<Reveal>
 		<Eyebrow>Pick your path</Eyebrow>
 		
 		<div class=" grid gap-5 md:grid-cols-2 md:gap-40">
 		<div class="mt-1">
-		<h2 class="max-w-2xl text-display leading-[1.05]">Do you sell things, or know people who do?</h2>
+		<h2 class="max-w-2xl text-display leading-[1.05]">Sell things, know people who do, or just know the place?</h2>
 		<p class="mt-6 max-w-2xl text-lg leading-relaxed">
-			That is the only question. Either way you are doing the same job - getting people through a
+			That is the only question. Any of them does the same job - getting people through a
 			local door instead of onto a warehouse website.
 		</p>
 		</div>
@@ -119,7 +139,7 @@
 		</div>
 	</Reveal>
 
-	<div class="mt-14 grid gap-12 md:grid-cols-2 md:gap-10">
+	<div class="mt-14 grid gap-12 md:grid-cols-2 lg:grid-cols-3 md:gap-10">
 		{#each paths as path, index (path.id)}
 			<Reveal delay={index * 90}>
 				<!-- h-full + flex so both columns end level, whatever the copy length,
