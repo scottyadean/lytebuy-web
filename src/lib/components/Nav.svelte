@@ -72,12 +72,17 @@
 		</ul>
 
 		<div class="hidden items-center gap-3 lg:flex">
-			<Button href="/sell" variant={solid ? 'secondary' : 'onDark'} size="md">
-				Start selling
-			</Button>
+
 			<Button href={appLinks.web} variant={solid ? 'primary' : 'onDark'} size="md">
-				Open the app
+			    <img src="/icons/tag.svg" alt="Shop" style="max-width: 20px;" />
+				Shop
 			</Button>
+
+			<Button href="/sell" variant={solid ? 'secondary' : 'onDark'} size="md">
+				<img src="/icons/shop.svg" alt="Sell" style="max-width: 17px;" />
+				Sell {" "}
+			</Button>
+
 		</div>
 
 		<button

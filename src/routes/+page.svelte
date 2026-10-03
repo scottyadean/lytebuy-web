@@ -95,11 +95,13 @@
 	poster="/img/placerville-hero-poster.jpg"
 >
 	{#snippet actions()}
-		<Button href={appLinks.web} variant="onDark" size="lg">Open on web</Button>
-		<Button
+		<Button href={appLinks.web}  size="md">
+			<img style="max-width: 20px;" src="/img/80s-Computer.webp" alt="computer" />
+			Open on Web</Button>
+		<Button style="min-width: 165px;"
 			href="/sell"
 			size="lg"
-			class="border border-white/40 text-white hover:bg-white/10"
+			class="border-white/40 text-white hover:bg-white/10"
 		>
 			Start selling
 		</Button>
