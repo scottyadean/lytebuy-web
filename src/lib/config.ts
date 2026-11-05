@@ -39,7 +39,10 @@ export const appLinks = {
 	// /sell route (lytebuy-client/app/sell.tsx). Both urls verified live (200)
 	// before being wired up here. While this was empty the /sell page fell back
 	// to the contact form, hiding the primary vendor call to action.
-	vendorSignup: 'https://app.lytebuy.com/sell'
+	vendorSignup: 'https://app.lytebuy.com/sell',
+	// Direct entry into the client's seller onboarding flow, skipping the
+	// marketing /sell page. Used by the top nav Sell button.
+	vendorStart: 'https://app.lytebuy.com/sell/start'
 } as const;
 
 export const contact = {

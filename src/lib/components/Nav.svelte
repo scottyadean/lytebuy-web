@@ -78,7 +78,7 @@
 				Shop
 			</Button>
 
-			<Button href="/sell" variant={solid ? 'secondary' : 'onDark'} size="md">
+			<Button href={appLinks.vendorStart} variant={solid ? 'secondary' : 'onDark'} size="md">
 				<img src="/icons/shop.svg" alt="Sell" style="max-width: 17px;" />
 				Sell {" "}
 			</Button>
@@ -113,7 +113,7 @@
 				{/each}
 			</ul>
 			<div class="container-page flex flex-col gap-3 pb-6">
-				<Button href="/sell" variant="secondary" full>Start selling</Button>
+				<Button href={appLinks.vendorStart} variant="secondary" full>Start selling</Button>
 				<Button href={appLinks.web} variant="primary" full>Open the app</Button>
 			</div>
 		</div>
