@@ -16,9 +16,20 @@
 // @types/node, it resolves the path at build time instead of guessing at a
 // location relative to the compiled output, and it makes the markdown a tracked
 // build input - editing a document rebuilds the page.
-import privacyMarkdown from '../../../../docs/legal/privacy-policy.md?raw';
-import taxMarkdown from '../../../../docs/legal/tax-responsibility.md?raw';
-import termsMarkdown from '../../../../docs/legal/terms-of-use.md?raw';
+//
+// THESE ARE COPIES, and the copying is deliberate. lytebuy-web is its OWN git
+// repository (github.com/scottyadean/lytebuy-web), so the monorepo's
+// docs/legal/ is not in the Amplify build container. Importing from
+// ../../../../docs/legal/ works locally, where the folders sit side by side,
+// and FAILS THE DEPLOY - which is exactly what happened on 2026-11-13.
+//
+// The source of truth is still docs/legal/ in the monorepo. Re-sync with:
+//   npm run sync:legal
+// The test suite checks these against what the documents must contain, so a
+// copy that drifts into a placeholder fails rather than ships.
+import privacyMarkdown from '$lib/legal/privacy-policy.md?raw';
+import taxMarkdown from '$lib/legal/tax-responsibility.md?raw';
+import termsMarkdown from '$lib/legal/terms-of-use.md?raw';
 
 import { renderMarkdown } from './markdown';
 
