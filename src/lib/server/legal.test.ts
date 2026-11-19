@@ -41,6 +41,36 @@ describe('loadLegalDocument', () => {
 		expect(loadLegalDocument('terms').html).toContain('Arizona');
 	});
 
+	it('terms publishes the resolved dispute-resolution and liability clauses', () => {
+		// These two were bracketed placeholders until the attorney review on
+		// 2026-11-18. They are the clauses a store reviewer and a vendor both look
+		// for, so a regression that reinstated a placeholder has to fail here.
+		const html = loadLegalDocument('terms').html;
+		expect(html).toContain('Maricopa County');
+		expect(html).toContain('THE GREATER OF');
+		expect(html).toContain('small-claims court');
+	});
+
+	it('terms publishes the app store and California notices', () => {
+		// Apple requires the third-party-beneficiary and warranty language, and
+		// Civil Code 1789.3 requires the California notice. Both arrived in the
+		// reviewed revision and are easy to lose in a regeneration.
+		const html = loadLegalDocument('terms').html;
+		expect(html).toContain('third-party beneficiaries');
+		expect(html).toContain('1789.3');
+	});
+
+	it('terms publishes the prohibited items and services', () => {
+		// Stripe's restricted-business rules bar sexual services outright, so this
+		// clause is a condition of keeping the payment account, not a preference.
+		// It also has to survive the sync from docs/legal/ - a stale copy here
+		// would publish terms that do not match what the app shows.
+		const html = loadLegalDocument('terms').html;
+		for (const prohibited of ['alcohol', 'nicotine', 'adult content', 'illicit drugs', 'sexual services']) {
+			expect(html).toContain(prohibited);
+		}
+	});
+
 	it.each(SLUGS)('%s links to sibling documents by route, not by filename', (slug) => {
 		// The markdown cross-links as "(tax-responsibility.md)", which is correct in
 		// the repo and a 404 on the site. The prerenderer catches this, so a
@@ -51,8 +81,15 @@ describe('loadLegalDocument', () => {
 	});
 
 	it('rewrites a known cross-link to its route', () => {
-		// terms-of-use.md line 89 links to the privacy policy.
-		expect(loadLegalDocument('terms').html).toContain('href="/privacy"');
+		// privacy-policy.md links to the tax document as "(tax-responsibility.md)",
+		// which must reach the reader as /tax.
+		//
+		// This used to assert on the terms document, which linked to the privacy
+		// policy. The attorney-reviewed revision of 2026-11-18 names the companion
+		// documents in prose and carries no markdown links at all, so the assertion
+		// moved to a document that still has one rather than being deleted - the
+		// rewriter is what needs covering, not any particular document.
+		expect(loadLegalDocument('privacy').html).toContain('href="/tax"');
 	});
 
 	it.each(SLUGS)('%s does not publish the engineering footnote', (slug) => {
@@ -85,12 +122,17 @@ describe('loadLegalDocument', () => {
 		expect(loadLegalDocument(slug).html.length).toBeGreaterThan(2000);
 	});
 
-	// The three remaining placeholders are legal/CPA decisions, not code. They are
-	// listed here so that filling one makes this test fail and prompt its removal,
+	// Remaining placeholders are legal/CPA decisions, not code. They are listed
+	// here so that filling one makes this test fail and prompt its removal,
 	// rather than shipping quietly.
-	const UNRESOLVED = ['[Dispute-resolution clause', '[the greater of the amount', '[List the currently-registered'];
+	//
+	// 2026-11-18: the attorney-reviewed terms resolved two of the original three.
+	// The dispute-resolution clause is now Section 18 (informal resolution, then
+	// Maricopa County courts) and the liability cap is Section 14 (the greater of
+	// 12 months of fees earned, or $100). Only the CPA item is left.
+	const UNRESOLVED = ['[List the currently-registered'];
 
-	it('has exactly the three known unresolved clauses, and no other placeholder', () => {
+	it('has exactly the known unresolved clauses, and no other placeholder', () => {
 		const all = SLUGS.map((s) => loadLegalDocument(s).html).join('\n');
 
 		// These must be filled by a lawyer/CPA before launch.

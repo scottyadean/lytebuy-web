@@ -1,12 +1,6 @@
 # Lytebuy Privacy Policy
 
-> **DRAFT — not legal advice.** Written to reflect the data the app actually collects
-> and how it is used (verified against the codebase). It MUST be reviewed by a
-> licensed attorney before publishing, and reconciled with the app's in-product
-> privacy commitments (served at `GET /api/v1/privacy`) and iOS `PrivacyInfo.xcprivacy`
-> / Play Data Safety declarations. Fill the **[bracketed]** placeholders.
-
-**Effective date:** November 11, 2026 · **Last updated:** November 11, 2026
+**Effective date:** November 11, 2026 · **Last updated:** November 18, 2026
 
 This Privacy Policy explains how **Scott Dean** ("Lytebuy", "we") collects,
 uses, and shares information when you use the Lytebuy marketplace ("Service").
